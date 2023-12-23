@@ -1,0 +1,79 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+spring:
+  application:
+    name: zuul-server
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+  redis:
+    password: Redis!@#
+    host: 112.126.75.129
+    port: 6379
+    lettuce:
+      pool:
+        # 连接池最大连接数（使用负值表示没有限制） 默认 8
+        max-active: 200
+        # 连接池最大阻塞等待时间（使用负值表示没有限制） 默认 -1
+        max-wait: 20
+        # 连接池中的最大空闲连接 默认 8
+        max-idle: 10
+        # 连接池中的最小空闲连接 默认 8
+        min-idle: 8
+    # 前端发送json字符串并将字符串转换成date对象
+  jackson:
+    time-zone: GMT+8
+    serialization:
+      #关闭jackson 对json做解析
+      fail-on-empty-beans: false
+  mvc: # 上述配置，这处无用
+    format:
+      date: yyyy-MM-dd HH:mm:ss
+server:
+  port: 9000
+ribbon:
+  ReadTimeout: 10000
+  SocketTimeout: 10000
+zuul:
+  SendErrorFilter:
+    error:
+      disable: true
+  ratelimit:
+    key-prefix: ratelimit
+    enabled: true
+    repository: REDIS
+    behind-proxy: true
+    add-response-headers: true
+    default-policy-list: #optional - will apply unless specific policy exists
+      - limit: 10 #optional - request number limit per refresh interval window
+        quota: 1000 #optional - request time limit per refresh interval window (in seconds)
+        refresh-interval: 60 #default value (in seconds)
+        type: #optional
+          - origin #按照ip进行拦截
+  host:
+    socket-timeout-millis: 60000  #zuul的socket超时设置
+    connect-timeout-millis: 60000 #zuul的connect超时设置
+  forceOriginalQueryStringEncoding: true #强制采用原始请求的编码格式，即不对Get请求参数做编解码
+  ignored-patterns: /*-server/** #忽略匹配这个格式的路径
+  sensitiveHeaders:
+  routes:
+    manager-server-route:
+      path: /manager/**
+      service-id: manager-server
+      custom-sensitive-headers: true
+    common-server-route:
+      path: /common/**
+      service-id: common-server
+      custom-sensitive-headers: true
+# 忽略鉴权url
+ignored:
+  urls:
+    - /**/user/login
+    - /**/user/refresh/**
+    - /common/upload/**
+logging:
+  level:
+    com.fc.ishop: debug
