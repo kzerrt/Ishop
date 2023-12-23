@@ -10,4 +10,5 @@ public interface SendParam {
     String pageVo = "pageVo";
     String searchVo = "searchVo";
     String memberSearchVo = "memberSearchVo";
+    String secKillSearchParams = "secKillSearchParams";
 }

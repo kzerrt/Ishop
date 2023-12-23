@@ -10,6 +10,10 @@
         <module>eureka-server</module>
         <module>common-api</module>
         <module>common-server</module>
+        <module>goods-api</module>
+        <module>manager-api</module>
+        <module>goods-server</module>
+        <module>consumer-api</module>
     </modules>
 
     <parent>
@@ -51,6 +55,21 @@
             <dependency>
                 <groupId>com.fc</groupId>
                 <artifactId>common-api</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fc</groupId>
+                <artifactId>goods-api</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fc</groupId>
+                <artifactId>manager-api</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fc</groupId>
+                <artifactId>consumer-api</artifactId>
                 <version>1.0.0</version>
             </dependency>
         </dependencies>

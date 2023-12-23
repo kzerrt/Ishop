@@ -36,4 +36,24 @@ public class DateUtil {
         }
         return newDate;
     }
+
+    public static long getDateline() {
+        return 0;
+    }
+
+    public static int getDelayTime(long time) {
+        return 0;
+    }
+
+    public static String toString(Long triggerTime, String s) {
+        return null;
+    }
+
+    public static Object endOfDate(Date endDate) {
+        return null;
+    }
+
+    public static long startOfTodDay() {
+        return 0;
+    }
 }

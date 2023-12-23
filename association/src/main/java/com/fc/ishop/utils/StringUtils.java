@@ -222,6 +222,10 @@ public class StringUtils extends StrUtil{
             }
         }
     }
+
+    public static String getRandStr(int i) {
+        return null;
+    }
     /*public static boolean matchUri(String url, List<String> ignoreUrls) {
         if (url == null || ignoreUrls == null || ignoreUrls.size() == 0) return false;
         String[] paths = url.split("/");

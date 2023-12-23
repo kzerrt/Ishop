@@ -26,4 +26,8 @@ public class SnowFlake {
     public static String getIdStr() {
         return snowFlake.nextIdStr();
     }
+
+    public static String createStr(String oi) {
+        return null;
+    }
 }
