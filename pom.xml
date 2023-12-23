@@ -8,6 +8,8 @@
         <module>association-server</module>
         <module>zuul-server</module>
         <module>eureka-server</module>
+        <module>common-api</module>
+        <module>common-server</module>
     </modules>
 
     <parent>
@@ -39,6 +41,16 @@
             <dependency>
                 <groupId>com.fc</groupId>
                 <artifactId>association</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fc</groupId>
+                <artifactId>association-server</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fc</groupId>
+                <artifactId>common-api</artifactId>
                 <version>1.0.0</version>
             </dependency>
         </dependencies>
