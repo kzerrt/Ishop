@@ -63,7 +63,7 @@ public class GoodsSku extends BaseEntity {
     @Max(value = 99999999, message = "重量不能超过99999999")
     private Double weight;
     /**
-     * @see GoodsStatusEnum
+     *  GoodsStatusEnum
      */
     //@ApiModelProperty(value = "上架状态")
     private String marketEnable;
@@ -123,7 +123,7 @@ public class GoodsSku extends BaseEntity {
     //@ApiModelProperty(value = " 谁承担运费 BUYER：买家承担，STORE：卖家承担")
     private String freightPayer;
     /**
-     * @see GoodsAuthEnum
+     * GoodsAuthEnum
      */
     //@ApiModelProperty(value = "审核状态")
     private String isAuth;

@@ -17,7 +17,7 @@ public interface GoodsMemberClient {
     // 通过id获取成员
     @GetMapping("/goods-member/member/get/{id}")
     Member getById(@PathVariable String id);
-    @PostMapping("goods-member/update")
+    @PostMapping("goods-member/updateMember")
     void updateMember(@RequestBody LambdaUpdateWrapper<Member> updateWrapper);
 
     @PostMapping("/goods-member/update")

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 店铺管理
@@ -32,13 +33,10 @@ public interface StoreManagerClient {
 
     /**
      * 分页获取列表
-     * @param entity
-     * @param page
      * @return
      */
     @PostMapping("/manager-st/page")
-    ResultMessage<Page<StoreVo>> getByPage(@RequestBody StoreSearchParams entity,
-                                           @RequestBody PageVo page);
+    ResultMessage<Page<StoreVo>> getByPage(@RequestBody Map<String, String> send);
 
 
     /**

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fc.ishop.mapper.MenuMapper">
+
+
+    <select id="getUserRoleMenu" resultType="com.fc.ishop.vo.UserMenuVo">
+        SELECT rm.is_super,m.* FROM i_menu AS m INNER JOIN i_role_menu AS rm ON rm.menu_id=m.id WHERE rm.role_id IN (
+            SELECT ur.role_id FROM i_user_role AS ur WHERE ur.user_id=#{userId})
+        OR rm.role_id IN (
+                SELECT dr.role_id FROM i_department_role AS dr INNER JOIN i_admin_user AS au ON au.department_id=dr.department_id
+                WHERE au.id=#{userId})
+        GROUP BY m.id,rm.is_super ORDER BY rm.is_super desc;
+    </select>
+    <select id="findByUserId" resultType="com.fc.ishop.dos.Menu">
+        SELECT menu.* FROM i_menu AS menu WHERE menu.id
+        IN (
+                SELECT rm.menu_id FROM i_role_menu AS rm WHERE rm.role_id
+            IN (
+                SELECT ur.role_id FROM i_user_role AS ur WHERE ur.user_id=#{userId})
+            OR
+                rm.role_id IN (  SELECT dr.role_id FROM i_department_role AS dr WHERE dr.id=(
+                        SELECT department_id FROM i_admin_user AS au WHERE au.id = #{userId}))
+            );
+    </select>
+</mapper>

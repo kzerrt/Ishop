@@ -2,6 +2,7 @@ package com.fc.ishop.controller.store;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fc.ishop.constant.SendParam;
 import com.fc.ishop.dos.Store;
 import com.fc.ishop.dto.AdminStoreApplyDto;
 import com.fc.ishop.dto.StoreEditDto;
@@ -12,10 +13,12 @@ import com.fc.ishop.service.StoreService;
 import com.fc.ishop.vo.*;
 import com.fc.ishop.vo.category.CategoryVo;
 import com.fc.ishop.web.manager.StoreManagerClient;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 店铺管理
@@ -35,7 +38,10 @@ public class StoreController implements StoreManagerClient {
     }
 
     @Override
-    public ResultMessage<Page<StoreVo>> getByPage(StoreSearchParams entity, PageVo page) {
+    public ResultMessage<Page<StoreVo>> getByPage(Map<String, String> send) {
+        Gson gson = new Gson();
+        StoreSearchParams entity = gson.fromJson(send.get(SendParam.storeSearchParams), StoreSearchParams.class);
+        PageVo page = gson.fromJson(send.get(SendParam.pageVo), PageVo.class);
         return ResultUtil.data(storeService.listPage(entity, page));
     }
 
