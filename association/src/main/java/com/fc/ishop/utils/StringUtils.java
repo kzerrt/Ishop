@@ -7,6 +7,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class StringUtils extends StrUtil{
@@ -223,8 +224,20 @@ public class StringUtils extends StrUtil{
         }
     }
 
-    public static String getRandStr(int i) {
-        return null;
+    /**
+     * 获取随机数
+     *
+     * @param n 随机次数
+     * @return
+     */
+    public static String getRandStr(int n) {
+        Random random = new Random();
+        StringBuilder sRand = new StringBuilder();
+        for (int i = 0; i < n; i++) {
+            String rand = String.valueOf(random.nextInt(10));
+            sRand.append(rand);
+        }
+        return sRand.toString();
     }
     /*public static boolean matchUri(String url, List<String> ignoreUrls) {
         if (url == null || ignoreUrls == null || ignoreUrls.size() == 0) return false;

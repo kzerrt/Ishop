@@ -36,6 +36,14 @@ public enum CachePrefix {
      */
     SETTING,
     /**
+     * 商品详情
+     */
+    GOODS_SKU,
+    /**
+     * 商品库存
+     */
+    SKU_STOCK,
+    /**
      * 商品
      */
     GOODS;

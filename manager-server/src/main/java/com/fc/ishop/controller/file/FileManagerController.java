@@ -7,6 +7,7 @@ import com.fc.ishop.vo.PageVo;
 import com.fc.ishop.vo.ResultMessage;
 import com.fc.ishop.vo.SearchVo;
 import com.fc.ishop.web.manager.FileManagerClient;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,10 +32,11 @@ public class FileManagerController {
      */
     @GetMapping
     public ResultMessage<Page<IFile>> adminFiles(IFile file, SearchVo searchVo, PageVo pageVo) {
-        Map<String, Object> send = new HashMap<>();
-        send.put(SendParam.iFile, file);
-        send.put(SendParam.pageVo, pageVo);
-        send.put(SendParam.searchVo, searchVo);
+        Map<String, String> send = new HashMap<>();
+        Gson gson = new Gson();
+        send.put(SendParam.iFile, gson.toJson(file));
+        send.put(SendParam.pageVo, gson.toJson(pageVo));
+        send.put(SendParam.searchVo, gson.toJson(searchVo));
         return fileManagerClient.adminFiles(send);
     }
 

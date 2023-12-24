@@ -25,7 +25,7 @@ public interface FileManagerClient {
      * @return
      */
     @PostMapping("/manager/file")
-    ResultMessage<Page<IFile>> adminFiles(@RequestBody Map<String, Object> params);
+    ResultMessage<Page<IFile>> adminFiles(@RequestBody Map<String, String> params);
 
     /**
      * 文件重命名

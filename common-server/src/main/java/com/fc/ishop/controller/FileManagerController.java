@@ -1,6 +1,5 @@
 package com.fc.ishop.controller;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fc.ishop.constant.SendParam;
 import com.fc.ishop.dos.IFile;
@@ -10,6 +9,7 @@ import com.fc.ishop.vo.PageVo;
 import com.fc.ishop.vo.ResultMessage;
 import com.fc.ishop.vo.SearchVo;
 import com.fc.ishop.web.manager.FileManagerClient;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,10 +27,11 @@ public class FileManagerController implements FileManagerClient {
     private FileService fileService;
 
     @Override
-    public ResultMessage<Page<IFile>> adminFiles(Map<String, Object> params) {
-        PageVo pageVo = (PageVo) params.get(SendParam.pageVo);
-        IFile file = (IFile) params.get(SendParam.iFile);
-        SearchVo searchVo = (SearchVo) params.get(SendParam.searchVo);
+    public ResultMessage<Page<IFile>> adminFiles(Map<String, String> send) {
+        Gson gson = new Gson();
+        PageVo pageVo = gson.fromJson(send.get(SendParam.pageVo), PageVo.class);
+        IFile file = gson.fromJson(send.get(SendParam.iFile), IFile.class);
+        SearchVo searchVo = gson.fromJson(send.get(SendParam.searchVo), SearchVo.class);
         return ResultUtil.data(fileService.customerPage(file, searchVo, pageVo));
     }
 

@@ -61,7 +61,7 @@ public class SpecificationController implements SpecificationManagerClient {
         if (parameters.getStoreId() == null) {
             parameters.setStoreId("0");
         }
-        if (specificationService.addSpecification(parameters)) {
+        if (specificationService.addSpecification(parameters) != null) {
             return ResultUtil.data(parameters);
         }
         throw new ServiceException(ResultCode.SPEC_SAVE_ERROR);

@@ -3,6 +3,8 @@ package com.fc.ishop.utils;
 import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.IdUtil;
 
+import java.util.Date;
+
 /**
  * 雪花算法，分布式id获取
  * @author florence
@@ -27,7 +29,7 @@ public class SnowFlake {
         return snowFlake.nextIdStr();
     }
 
-    public static String createStr(String oi) {
-        return null;
+    public static String createStr(String prefix) {
+        return prefix + DateUtil.toString(new Date(), "yyyyMMdd") + SnowFlake.getId();
     }
 }

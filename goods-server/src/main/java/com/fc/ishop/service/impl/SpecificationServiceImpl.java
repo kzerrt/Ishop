@@ -62,7 +62,7 @@ public class SpecificationServiceImpl
     }
 
     @Override
-    public boolean addSpecification(SpecificationVo specificationVo) {
+    public Specification addSpecification(SpecificationVo specificationVo) {
         // 判断该规格是否存在
         Specification specification = this.getOne(new LambdaQueryWrapper<Specification>().eq(Specification::getSpecName, specificationVo.getSpecName()));
         if (specification == null) {
@@ -84,7 +84,7 @@ public class SpecificationServiceImpl
         if (!StringUtils.isEmpty(specificationVo.getSpecValue())) {
             specValuesService.saveSpecValue(specificationVo.getId(), new String[]{specificationVo.getSpecValue()});
         }
-        return true;
+        return specification;
     }
 
     @Override

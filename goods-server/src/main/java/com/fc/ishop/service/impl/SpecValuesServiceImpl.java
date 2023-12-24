@@ -55,4 +55,20 @@ public class SpecValuesServiceImpl
         queryWrapper.in(SpecValues::getSpecId, specIds);
         return baseMapper.selectList(queryWrapper);
     }
+
+    @Override
+    public SpecValues getSpecValues(String specValue, String specId) {
+        LambdaQueryWrapper<SpecValues> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(SpecValues::getSpecValue, specValue);
+        queryWrapper.eq(SpecValues::getSpecId, specId);
+
+        SpecValues specValues = this.getOne(queryWrapper);
+        if (specValues == null) {
+            specValues = new SpecValues();
+            specValues.setSpecValue(specValue);
+            specValues.setSpecId(specId);
+            this.save(specValues);
+        }
+        return specValues;
+    }
 }

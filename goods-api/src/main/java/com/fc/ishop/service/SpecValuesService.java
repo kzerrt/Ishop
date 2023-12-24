@@ -18,4 +18,13 @@ public interface SpecValuesService extends IService<SpecValues> {
      * @return
      */
     List<SpecValues> getSpecValues(List<String> specIds);
+    /**
+     * 根据值获取规格值信息
+     * 如果不存在则自动创建
+     *
+     * @param specValue 规格值
+     * @param specId    规格ID
+     * @return 规格值信息
+     */
+    SpecValues getSpecValues(String specValue, String specId);
 }

@@ -2,6 +2,7 @@ package com.fc.ishop.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.fc.ishop.cache.CachePrefix;
 import com.fc.ishop.dos.goods.Goods;
 import com.fc.ishop.dos.goods.GoodsSku;
 import com.fc.ishop.enums.GoodsAuthEnum;
@@ -16,6 +17,14 @@ import java.util.List;
  * @date 2023/12/15
  */
 public interface GoodsSkuService extends IService<GoodsSku> {
+
+    static String getCacheKeys(String id) {
+        return CachePrefix.GOODS_SKU.getPrefix() + id;
+    }
+
+    static String getStockCacheKey(String id) {
+        return CachePrefix.SKU_STOCK.getPrefix() + id;
+    }
     /**
      * 分页查询商品sku信息
      *

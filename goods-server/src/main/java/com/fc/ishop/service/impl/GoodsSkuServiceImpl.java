@@ -1,22 +1,35 @@
 package com.fc.ishop.service.impl;
 
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.fc.ishop.cache.Cache;
+import com.fc.ishop.dos.SpecValues;
+import com.fc.ishop.dos.Specification;
 import com.fc.ishop.dos.goods.Goods;
 import com.fc.ishop.dos.goods.GoodsSku;
 import com.fc.ishop.enums.GoodsAuthEnum;
 import com.fc.ishop.enums.GoodsStatusEnum;
 import com.fc.ishop.mapper.GoodsSkuMapper;
 import com.fc.ishop.service.GoodsSkuService;
+import com.fc.ishop.service.SpecValuesService;
+import com.fc.ishop.service.SpecificationService;
 import com.fc.ishop.utils.PageUtil;
 import com.fc.ishop.dto.GoodsSearchParams;
+import com.fc.ishop.vo.SpecValueVo;
+import com.fc.ishop.vo.SpecificationVo;
 import com.fc.ishop.vo.goods.GoodsSkuVo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author florence
@@ -25,6 +38,14 @@ import java.util.List;
 @Service("goodsSkuService")
 public class GoodsSkuServiceImpl
         extends ServiceImpl<GoodsSkuMapper, GoodsSku> implements GoodsSkuService {
+    @Autowired
+    private Cache<GoodsSku> cache;
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+    @Autowired
+    private SpecificationService specificationService;
+    @Autowired
+    private SpecValuesService specValuesService;
     @Override
     public Page<GoodsSku> getGoodsSkuByPage(GoodsSearchParams searchParams) {
         return this.page(PageUtil.initPage(searchParams), searchParams.queryWrapper());
@@ -71,12 +92,59 @@ public class GoodsSkuServiceImpl
     }
 
     @Override
-    public GoodsSku getGoodsSkuByIdFromCache(String skuId) {
-        return null;
+    public GoodsSku getGoodsSkuByIdFromCache(String id) {
+        GoodsSku goodsSku = cache.get(GoodsSkuService.getCacheKeys(id));
+        if (goodsSku == null) {
+            goodsSku = this.getById(id);
+            if (goodsSku == null) {
+                return null;
+            }
+            cache.put(GoodsSkuService.getCacheKeys(id), goodsSku);
+        }
+        String quantity = stringRedisTemplate.opsForValue().get(GoodsSkuService.getStockCacheKey(id));
+        if (quantity != null) {
+            if (goodsSku.getQuantity() != Integer.parseInt(quantity)) {
+                goodsSku.setQuantity(Integer.parseInt(quantity));
+                this.updateById(goodsSku);
+            }
+        } else {
+            stringRedisTemplate.opsForValue().set(GoodsSkuService.getStockCacheKey(id), goodsSku.getQuantity().toString());
+        }
+
+        return goodsSku;
     }
 
     // todo 商品展示信息拼装
     private GoodsSkuVo getGoodsSkuVo(GoodsSku goodsSku) {
-        return null;
+        GoodsSkuVo goodsSkuVO = new GoodsSkuVo(goodsSku);
+        JSONObject jsonObject = JSONUtil.parseObj(goodsSku.getSpecs());
+        List<SpecValueVo> specValueVOS = new ArrayList<>();
+        List<String> goodsGalleryList = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : jsonObject.entrySet()) {
+            SpecValueVo s = new SpecValueVo();
+            if (entry.getKey().equals("images")) {
+                s.setSpecName(entry.getKey());
+                if (entry.getValue().toString().contains("url")) {
+                    List<SpecValueVo.SpecImages> specImages = JSONUtil.toList(JSONUtil.parseArray(entry.getValue()), SpecValueVo.SpecImages.class);
+                    s.setSpecImage(specImages);
+                    goodsGalleryList = specImages.stream().map(SpecValueVo.SpecImages::getUrl).collect(Collectors.toList());
+                }
+            } else {
+                SpecificationVo specificationVO = new SpecificationVo();
+                specificationVO.setSpecName(entry.getKey());
+                specificationVO.setStoreId(goodsSku.getStoreId());
+                specificationVO.setCategoryPath(goodsSku.getCategoryPath());
+                Specification specification = specificationService.addSpecification(specificationVO);
+                s.setSpecNameId(specification.getId());
+                SpecValues specValues = specValuesService.getSpecValues(entry.getValue().toString(), specification.getId());
+                s.setSpecValueId(specValues.getId());
+                s.setSpecName(entry.getKey());
+                s.setSpecValue(entry.getValue().toString());
+            }
+            specValueVOS.add(s);
+        }
+        goodsSkuVO.setGoodsGalleryList(goodsGalleryList);
+        goodsSkuVO.setSpecList(specValueVOS);
+        return goodsSkuVO;
     }
 }

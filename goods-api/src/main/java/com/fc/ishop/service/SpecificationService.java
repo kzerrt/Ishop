@@ -32,7 +32,7 @@ public interface SpecificationService extends IService<Specification> {
      */
     boolean updateSpecification(SpecificationVo specificationVo);
 
-    boolean addSpecification(SpecificationVo specificationVo);
+    Specification addSpecification(SpecificationVo specificationVo);
 
     void deleteSpecification(List<String> ids);
     /**
