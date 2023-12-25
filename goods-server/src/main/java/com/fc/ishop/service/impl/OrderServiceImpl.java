@@ -1,6 +1,7 @@
 package com.fc.ishop.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -101,5 +102,17 @@ public class OrderServiceImpl
         orderMessage.setOrderSn(order.getSn());
         orderMessage.setNewStatus(OrderStatusEnum.valueOf(order.getOrderStatus()));
         this.sendUpdateStatusMessage(orderMessage);
+    }
+
+    // ****************************         统计              *****************************
+
+    @Override
+    public Integer orderNum(String orderStatus) {
+        LambdaQueryWrapper<Order> queryWrapper = new LambdaQueryWrapper<>();
+        if (!StringUtils.isEmpty(orderStatus)) {
+            queryWrapper.eq(Order::getOrderStatus, orderStatus);
+        }
+
+        return this.count(queryWrapper);
     }
 }

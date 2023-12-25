@@ -1,9 +1,13 @@
 package com.fc.ishop.config;
 
+import com.fc.ishop.base.DateConvert;
 import com.fc.ishop.interceptor.BaseInterceptor;
 import com.fc.ishop.prop.IgnoreProperties;
+import com.fc.ishop.utils.DateUtil;
+import com.fc.ishop.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -20,5 +24,15 @@ public class BaseWebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new BaseInterceptor(ignoreProperties));
+    }
+
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addConverter((String date) -> {
+            if (StringUtils.isEmpty(date)) {
+                return null;
+            }
+            return DateUtil.toDate(date, DateUtil.STANDARD_DATE_FORMAT);
+        });
     }
 }

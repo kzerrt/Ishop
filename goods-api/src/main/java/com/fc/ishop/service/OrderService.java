@@ -29,7 +29,11 @@ public interface OrderService extends IService<Order> {
     Page<OrderSimpleVo> queryByParams(OrderSearchParams orderSearchParams);
 
     OrderDetailVo queryDetail(String orderSn);
-
+    /**
+     * 发送更新订单状态的信息
+     *
+     * @param orderMessage 订单传输信息
+     */
     void sendUpdateStatusMessage(OrderMessage orderMessage);
 
     /**
@@ -41,4 +45,12 @@ public interface OrderService extends IService<Order> {
     Order updateConsignee(String orderSn, MemberAddressDto memberAddressDto);
 
     Order cancel(String orderSn, String reason);
+    //**********************************     统计         ************************
+    /**
+     * 统计订单数量
+     * @param orderStatus
+     * @return
+     */
+    Integer orderNum(String orderStatus);
+
 }

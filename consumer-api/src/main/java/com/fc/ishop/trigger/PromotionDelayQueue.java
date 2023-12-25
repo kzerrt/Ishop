@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * 促销延迟队列
+ * 通过线程池，在循环中不断获取时间戳的方式消费消息
  * @author florence
  * @date 2023/12/20
  */

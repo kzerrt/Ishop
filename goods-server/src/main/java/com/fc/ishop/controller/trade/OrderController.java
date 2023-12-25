@@ -11,6 +11,7 @@ import com.fc.ishop.vo.ResultMessage;
 import com.fc.ishop.vo.order.OrderDetailVo;
 import com.fc.ishop.vo.order.OrderSimpleVo;
 import com.fc.ishop.web.manager.OrderManagerClient;
+import com.fc.ishop.web.manager.statistic.OrderStatisticClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2023/12/18
  */
 @RestController
-public class OrderController implements OrderManagerClient {
+public class OrderController implements OrderManagerClient, OrderStatisticClient {
     // 订单
     @Autowired
     private OrderService orderService;
@@ -56,5 +57,10 @@ public class OrderController implements OrderManagerClient {
     @Override
     public ResultMessage<Order> cancel(String orderSn, String reason) {
         return ResultUtil.data(orderService.cancel(orderSn, reason));
+    }
+    // *******************             统计               **************
+    @Override
+    public Integer orderNum(String orderStatus) {
+        return orderService.orderNum(orderStatus);
     }
 }

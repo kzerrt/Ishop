@@ -13,7 +13,7 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 
 /**
- * 延时队列
+ * 消息发送类
  * @author florence
  * @date 2023/12/20
  */
@@ -45,6 +45,7 @@ public class RocketMQTimerTrigger implements TimeTrigger{
         String uniqueKey = timeTriggerMsg.getUniqueKey();
         if (StringUtils.isEmpty(uniqueKey)) {
             uniqueKey = StringUtils.getRandStr(10);
+            timeTriggerMsg.setUniqueKey(uniqueKey);
         }
         // 执行任务key
         String generateKey = TimeTriggerUtil.generateKey(timeTriggerMsg.getTriggerExecutor(), timeTriggerMsg.getTriggerTime(), uniqueKey);

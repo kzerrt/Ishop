@@ -29,9 +29,6 @@ spring:
     serialization:
       #关闭jackson 对json做解析
       fail-on-empty-beans: false
-  mvc: # 上述配置，这处无用
-    format:
-      date: yyyy-MM-dd HH:mm:ss
 server:
   port: 9000
 ribbon:

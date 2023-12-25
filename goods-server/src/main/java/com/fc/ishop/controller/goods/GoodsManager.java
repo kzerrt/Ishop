@@ -1,19 +1,23 @@
 package com.fc.ishop.controller.goods;
 
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fc.ishop.dos.goods.Goods;
 import com.fc.ishop.dos.goods.GoodsSku;
-import com.fc.ishop.enums.GoodsAuthEnum;
-import com.fc.ishop.enums.GoodsStatusEnum;
-import com.fc.ishop.enums.ResultCode;
-import com.fc.ishop.enums.ResultUtil;
+import com.fc.ishop.enums.*;
 import com.fc.ishop.exception.ServiceException;
+import com.fc.ishop.security.context.UserContext;
 import com.fc.ishop.service.GoodsService;
 import com.fc.ishop.service.GoodsSkuService;
 import com.fc.ishop.dto.GoodsSearchParams;
+import com.fc.ishop.utils.StringUtils;
 import com.fc.ishop.vo.goods.GoodsVo;
 import com.fc.ishop.vo.ResultMessage;
 import com.fc.ishop.web.manager.GoodsManagerClient;
+import com.fc.ishop.web.manager.statistic.GoodsStatisticClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,7 +29,7 @@ import java.util.List;
  * @date 2023/12/15
  */
 @RestController
-public class GoodsManager implements GoodsManagerClient {
+public class GoodsManager implements GoodsManagerClient, GoodsStatisticClient {
     // 商品
     @Autowired
     private GoodsService goodsService;
@@ -77,5 +81,30 @@ public class GoodsManager implements GoodsManagerClient {
     public ResultMessage<GoodsVo> get(String id) {
         GoodsVo goods = goodsService.getGoodsVo(id);
         return ResultUtil.data(goods);
+    }
+
+    // ******************                  统计           ******************************
+    @Override
+    public Integer goodsNum(String goodsStatusEnum, String goodsAuthEnum) {
+        LambdaQueryWrapper<Goods> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Goods::getDeleteFlag, false);
+        if (!StringUtils.isEmpty(goodsStatusEnum)) {
+            queryWrapper.eq(Goods::getMarketEnable, goodsStatusEnum);
+        }
+        if (!StringUtils.isEmpty(goodsAuthEnum)) {
+            queryWrapper.eq(Goods::getIsAuth, goodsAuthEnum);
+        }
+        if (StringUtils.equals(UserContext.getCurrentUser().getRole().name(), UserEnums.STORE.name())) {
+            queryWrapper.eq(Goods::getStoreId, UserContext.getCurrentUser().getStoreId());
+        }
+        return goodsService.count(queryWrapper);
+    }
+
+    @Override
+    public Integer todayUpperNum() {
+        LambdaQueryWrapper<Goods> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.eq(Goods::getMarketEnable, GoodsStatusEnum.UPPER.name());
+        queryWrapper.gt(Goods::getCreateTime, DateUtil.beginOfDay(new DateTime()));
+        return goodsService.count(queryWrapper);
     }
 }

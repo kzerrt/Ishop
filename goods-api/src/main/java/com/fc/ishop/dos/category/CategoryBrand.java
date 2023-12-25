@@ -25,7 +25,6 @@ import java.util.Date;
 public class CategoryBrand implements Serializable {
     private static final long serialVersionUID = 3315719881926878L;
 
-    @TableId
     @TableField
     private String id;
 
