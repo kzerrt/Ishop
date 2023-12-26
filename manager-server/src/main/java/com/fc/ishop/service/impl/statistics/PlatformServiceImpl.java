@@ -3,8 +3,12 @@ package com.fc.ishop.service.impl.statistics;
 import com.fc.ishop.cache.Cache;
 import com.fc.ishop.cache.CachePrefix;
 import com.fc.ishop.service.statistic.PlatformService;
+import com.fc.ishop.vo.OnlineMemberVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author florence
@@ -24,5 +28,24 @@ public class PlatformServiceImpl implements PlatformService {
         int size = cache.keys(CachePrefix.ACCESS_TOKEN.getPrefix() + "*").size();
         cache.put(CachePrefix.ONLINE_NUM.getPrefix(), size, 600L);
         return Long.valueOf(size);
+    }
+
+    @Override
+    public List<OnlineMemberVo> statisticsOnline() {
+        /*Object object = cache.get(CachePrefix.ONLINE_MEMBER.getPrefix());
+        List<OnlineMemberVo> result = new ArrayList<>();
+        if (object != null) {
+            result = (List<OnlineMemberVo>) object;
+        }
+        return this.initData(result);*/
+        return null;
+    }
+
+    /**
+     * 在线人数初始化
+     */
+    private List<OnlineMemberVo> initData(List<OnlineMemberVo> source) {
+
+        return null;
     }
 }

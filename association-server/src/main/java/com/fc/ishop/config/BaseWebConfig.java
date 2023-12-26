@@ -28,11 +28,6 @@ public class BaseWebConfig implements WebMvcConfigurer {
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
-        registry.addConverter((String date) -> {
-            if (StringUtils.isEmpty(date)) {
-                return null;
-            }
-            return DateUtil.toDate(date, DateUtil.STANDARD_DATE_FORMAT);
-        });
+        registry.addConverter(new DateConvert());
     }
 }

@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2023/12/18
  */
 @RestController
-public class OrderController implements OrderManagerClient, OrderStatisticClient {
+public class OrderController implements OrderManagerClient {
     // 订单
     @Autowired
     private OrderService orderService;
@@ -57,10 +57,5 @@ public class OrderController implements OrderManagerClient, OrderStatisticClient
     @Override
     public ResultMessage<Order> cancel(String orderSn, String reason) {
         return ResultUtil.data(orderService.cancel(orderSn, reason));
-    }
-    // *******************             统计               **************
-    @Override
-    public Integer orderNum(String orderStatus) {
-        return orderService.orderNum(orderStatus);
     }
 }

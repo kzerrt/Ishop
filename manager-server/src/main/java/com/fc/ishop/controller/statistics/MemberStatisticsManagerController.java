@@ -1,7 +1,7 @@
 package com.fc.ishop.controller.statistics;
 
 import com.fc.ishop.dos.statistics.MemberStatisticsData;
-import com.fc.ishop.dto.StatisticsQueryParam;
+import com.fc.ishop.vo.StatisticsQueryParam;
 import com.fc.ishop.enums.ResultUtil;
 import com.fc.ishop.service.statistic.MemberStatisticsDataService;
 import com.fc.ishop.vo.ResultMessage;

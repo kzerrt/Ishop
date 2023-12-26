@@ -1,8 +1,15 @@
 package com.fc.ishop.web.manager.statistic;
 
+import com.fc.ishop.dto.GoodsStatisticsQueryParam;
+import com.fc.ishop.vo.ResultMessage;
+import com.fc.ishop.vo.goods.GoodsStatisticsDataVo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 /**
  * @author florence
@@ -12,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface GoodsStatisticClient {
     /**
      * 获取订单数量
-     * @return
      */
     @GetMapping("/goodsStatistic/goodsNum")
     Integer goodsNum(@RequestParam("goodsStatusEnum") String goodsStatusEnum,
@@ -24,5 +30,11 @@ public interface GoodsStatisticClient {
      */
     @GetMapping("/goodsStatistic/todayUpper")
     Integer todayUpperNum();
+
+    /**
+     * 获取统计列表,排行前一百的数据
+     */
+    @PostMapping("/goodsStatistic/goods/getByPage")
+    ResultMessage<List<GoodsStatisticsDataVo>> getByPage(@RequestBody GoodsStatisticsQueryParam goodsStatisticsQueryParam);
 
 }

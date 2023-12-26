@@ -17,6 +17,6 @@ public class DateConvert implements Converter<String, Date> {
         if (StringUtils.isEmpty(s)) {
             return null;
         }
-        return DateUtil.toDate(s, DateUtil.STANDARD_DATE_FORMAT);
+        return DateUtil.toDate(new Date(s), DateUtil.STANDARD_DATE_FORMAT);
     }
 }

@@ -29,7 +29,7 @@ import java.util.List;
  * @date 2023/12/15
  */
 @RestController
-public class GoodsManager implements GoodsManagerClient, GoodsStatisticClient {
+public class GoodsManager implements GoodsManagerClient {
     // 商品
     @Autowired
     private GoodsService goodsService;
@@ -83,28 +83,4 @@ public class GoodsManager implements GoodsManagerClient, GoodsStatisticClient {
         return ResultUtil.data(goods);
     }
 
-    // ******************                  统计           ******************************
-    @Override
-    public Integer goodsNum(String goodsStatusEnum, String goodsAuthEnum) {
-        LambdaQueryWrapper<Goods> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(Goods::getDeleteFlag, false);
-        if (!StringUtils.isEmpty(goodsStatusEnum)) {
-            queryWrapper.eq(Goods::getMarketEnable, goodsStatusEnum);
-        }
-        if (!StringUtils.isEmpty(goodsAuthEnum)) {
-            queryWrapper.eq(Goods::getIsAuth, goodsAuthEnum);
-        }
-        if (StringUtils.equals(UserContext.getCurrentUser().getRole().name(), UserEnums.STORE.name())) {
-            queryWrapper.eq(Goods::getStoreId, UserContext.getCurrentUser().getStoreId());
-        }
-        return goodsService.count(queryWrapper);
-    }
-
-    @Override
-    public Integer todayUpperNum() {
-        LambdaQueryWrapper<Goods> queryWrapper = Wrappers.lambdaQuery();
-        queryWrapper.eq(Goods::getMarketEnable, GoodsStatusEnum.UPPER.name());
-        queryWrapper.gt(Goods::getCreateTime, DateUtil.beginOfDay(new DateTime()));
-        return goodsService.count(queryWrapper);
-    }
 }

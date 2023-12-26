@@ -1,4 +1,4 @@
-package com.fc.ishop.dto;
+package com.fc.ishop.vo;
 
 import lombok.Data;
 

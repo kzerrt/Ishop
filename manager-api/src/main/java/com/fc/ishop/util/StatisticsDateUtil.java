@@ -1,6 +1,6 @@
 package com.fc.ishop.util;
 
-import com.fc.ishop.dto.StatisticsQueryParam;
+import com.fc.ishop.vo.StatisticsQueryParam;
 import com.fc.ishop.enums.SearchTypeEnum;
 import com.fc.ishop.utils.StringUtils;
 

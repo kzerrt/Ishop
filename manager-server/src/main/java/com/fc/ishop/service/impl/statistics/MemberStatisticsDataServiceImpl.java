@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fc.ishop.dos.statistics.MemberStatisticsData;
-import com.fc.ishop.dto.StatisticsQueryParam;
+import com.fc.ishop.vo.StatisticsQueryParam;
 import com.fc.ishop.mapper.MemberStatisticsDataMapper;
 import com.fc.ishop.service.statistic.MemberStatisticsDataService;
 import com.fc.ishop.util.StatisticsDateUtil;

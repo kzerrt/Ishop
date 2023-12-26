@@ -2,7 +2,7 @@ package com.fc.ishop.service.statistic;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.fc.ishop.dos.statistics.MemberStatisticsData;
-import com.fc.ishop.dto.StatisticsQueryParam;
+import com.fc.ishop.vo.StatisticsQueryParam;
 
 import java.util.List;
 

@@ -22,7 +22,7 @@ public class DateUtil {
      * @return
      */
     public static Date toDate(String date, String pattern) {
-        if ("".equals("" + date)) {
+        if ("".equals(date)) {
             return null;
         }
         if (pattern == null) {
@@ -32,6 +32,23 @@ public class DateUtil {
         Date newDate = new Date();
         try {
             newDate = sdf.parse(date);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return newDate;
+    }
+    public static Date toDate(Date date, String pattern) {
+        if (date == null) {
+            return null;
+        }
+        if (pattern == null) {
+            pattern = STANDARD_DATE_FORMAT;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern, Locale.ENGLISH);
+        String format = sdf.format(date);
+        Date newDate = null;
+        try {
+            newDate = sdf.parse(format);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
