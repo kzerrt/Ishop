@@ -8,7 +8,7 @@ import java.util.Date;
  */
 public class DateTest {
     public static void main(String[] args) {
-        String str = "Tue Dec 26 14:13:28 CST 2023 (香港时间)";
+        String str = "2023 12 23 12:23:12";
         System.out.println(DateUtil.toDate(new Date(str), null));
     }
 }

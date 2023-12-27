@@ -28,6 +28,6 @@ public class BaseWebConfig implements WebMvcConfigurer {
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
-        registry.addConverter(new DateConvert());
+        //registry.addConverter(new DateConvert());
     }
 }

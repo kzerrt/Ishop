@@ -30,12 +30,14 @@ import com.fc.ishop.utils.DateUtil;
 import com.fc.ishop.utils.StringUtils;
 import com.fc.ishop.vo.PageVo;
 import com.fc.ishop.vo.SecKillVo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,6 +45,7 @@ import java.util.stream.Collectors;
  * @author florence
  * @date 2023/12/20
  */
+@Slf4j
 @Service("secKillService")
 public class SecKillServiceImpl
         extends ServiceImpl<SecKillMapper, SecKill> implements SecKillService {
@@ -56,6 +59,23 @@ public class SecKillServiceImpl
     private RocketMQCustomProperties rocketMQCustomProperties;
     @Autowired
     private TimeTrigger timeTrigger;
+
+    /**
+     * 将mongo数据库中的促销活动进行添加
+     */
+    @PostConstruct
+    private void initPromotion() {
+        SecKillSearchParams queryParam = new SecKillSearchParams();
+        queryParam.setPromotionStatus(PromotionStatusEnum.NEW.name());
+        Query query = MongoUtil.creatMongoQuery(queryParam);
+
+        // 查询新建活动
+        List<SecKillVo> secKillVos = mongoTemplate.find(query, SecKillVo.class);
+        log.info("促销活动初始化延迟队列，大小 {}", secKillVos.size());
+        for (SecKillVo vo : secKillVos) {
+            initTask(vo);
+        }
+    }
     @Override
     public boolean saveSeckill(SecKillVo seckill) {
         // 检查限时抢购参数
@@ -190,6 +210,21 @@ public class SecKillServiceImpl
         this.updateById(seckill);
     }
 
+    /**
+     * 项目加载时，将未开始的活动加入到延迟队列
+     * @param seckill
+     */
+    private void initTask(SecKillVo seckill) {
+
+        long current = System.currentTimeMillis() / 1000;
+        long endTime = seckill.getEndTime().getTime() / 1000;
+        // 比较当前时间与活动开始时间
+        if (current - endTime < 0) {
+            return;
+        }
+
+        addSeckillStartTask(seckill);
+    }
     /**
      * 发送延时任务
      */

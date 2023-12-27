@@ -18,6 +18,11 @@
     <dependencies>
         <dependency>
             <groupId>com.fc</groupId>
+            <artifactId>goods-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fc</groupId>
             <artifactId>association</artifactId>
             <scope>provided</scope>
         </dependency>

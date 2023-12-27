@@ -1,5 +1,6 @@
 package com.fc.ishop.service;
 
+
 import java.util.Map;
 
 /**
@@ -14,4 +15,5 @@ public interface PromotionService {
      */
     Map<String, Object> getCurrentPromotion();
 
+    boolean updatePromotionStatus(Object promotionMessage);
 }
