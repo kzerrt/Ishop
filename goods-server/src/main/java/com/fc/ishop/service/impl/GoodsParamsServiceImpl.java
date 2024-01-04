@@ -1,6 +1,7 @@
 package com.fc.ishop.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fc.ishop.dos.category.CategoryParameterGroup;
 import com.fc.ishop.dos.goods.GoodsParams;
@@ -44,6 +45,23 @@ public class GoodsParamsServiceImpl
     @Override
     public List<GoodsParams> getGoodsParamsByGoodsId(String goodsId) {
         return this.list(new LambdaQueryWrapper<GoodsParams>().eq(GoodsParams::getGoodsId, goodsId));
+    }
+
+    @Override
+    public void addParams(List<GoodsParams> paramList, String goodsId) {
+        //先删除现有商品参数
+        this.remove(new UpdateWrapper<GoodsParams>().eq("goods_id", goodsId));
+        //循环添加参数
+        if (paramList != null) {
+            for (GoodsParams param : paramList) {
+                GoodsParams goodsParams = new GoodsParams();
+                goodsParams.setGoodsId(goodsId);
+                goodsParams.setParamName(param.getParamName());
+                goodsParams.setParamValue(param.getParamValue());
+                goodsParams.setParamId(param.getId());
+                this.save(goodsParams);
+            }
+        }
     }
 
     private List<GoodsParameterGroupVo> convertParamList(List<CategoryParameterGroup> groupList, List<GoodsParamsVo> paramList) {

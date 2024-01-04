@@ -17,4 +17,6 @@ public interface GoodsGalleryService extends IService<GoodsGallery> {
      * @return 商品相册列表
      */
     List<GoodsGallery> getGoodsListByGoodsId(String goodsId);
+
+    void add(List<String> goodsGalleryList, String id);
 }

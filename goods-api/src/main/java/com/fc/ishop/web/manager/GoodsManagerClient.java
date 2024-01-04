@@ -3,14 +3,12 @@ package com.fc.ishop.web.manager;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fc.ishop.dos.goods.Goods;
 import com.fc.ishop.dos.goods.GoodsSku;
+import com.fc.ishop.dto.GoodsOperationDto;
 import com.fc.ishop.dto.GoodsSearchParams;
 import com.fc.ishop.vo.ResultMessage;
 import com.fc.ishop.vo.goods.GoodsVo;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
@@ -26,7 +24,7 @@ public interface GoodsManagerClient {
     /**
      * 分页获取
      */
-    @GetMapping("/manager-g/list")
+    @PostMapping("/manager-g/list")
     Page<Goods> getByPage(@RequestBody GoodsSearchParams goodsSearchParams);
 
     /**
@@ -34,7 +32,7 @@ public interface GoodsManagerClient {
      * @param goodsSearchParams
      * @return
      */
-    @GetMapping("/manager-g/sku/list")
+    @PostMapping("/manager-g/sku/list")
     ResultMessage<Page<GoodsSku>> getSkuByPage(@RequestBody GoodsSearchParams goodsSearchParams);
 
     /**
@@ -42,7 +40,7 @@ public interface GoodsManagerClient {
      * @param goodsSearchParams
      * @return
      */
-    @GetMapping("/manager-g/auth/list")
+    @PostMapping("/manager-g/auth/list")
     Page<Goods> getAuthPage(@RequestBody GoodsSearchParams goodsSearchParams);
 
     /**
@@ -56,6 +54,11 @@ public interface GoodsManagerClient {
                                      @NotEmpty(message = "下架原因不能为空")
                                      @RequestParam String reason);
 
+    /**
+     * 添加商品
+     */
+    @PostMapping("/manager-g/saveGoods")
+    ResultMessage<GoodsOperationDto> save(@RequestBody GoodsOperationDto goodsOperationDTO);
     /**
      * 管理员审核商品
      * @param goodsIds

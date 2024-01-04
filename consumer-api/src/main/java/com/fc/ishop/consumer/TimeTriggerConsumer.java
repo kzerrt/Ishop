@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Slf4j
-@RocketMQMessageListener(topic = "${lili.data.rocketmq.promotion-topic}", consumerGroup = "${lili.data.rocketmq.promotion-group}")
+@RocketMQMessageListener(topic = "${ishop.rocketmq.promotion-topic}", consumerGroup = "${ishop.rocketmq.promotion-group}")
 public class TimeTriggerConsumer implements RocketMQListener<TimeTriggerMsg> {
     @Autowired
     private Cache<Integer> cache;

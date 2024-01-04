@@ -4,6 +4,7 @@ package com.fc.ishop.delayqueue;
 import com.fc.ishop.util.ThreadPoolUtil;
 import com.fc.ishop.utils.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.DefaultTypedTuple;
 import org.springframework.util.CollectionUtils;
@@ -20,7 +21,8 @@ import java.util.concurrent.TimeUnit;
  * @since 2020/11/7
  **/
 @Slf4j
-public abstract class AbstractDelayQueueMachineFactory {
+public abstract class AbstractDelayQueueMachineFactory implements DisposableBean {
+    private boolean flag = true;
 
     @Autowired
     private RedisUtil redisUtil;
@@ -49,7 +51,7 @@ public abstract class AbstractDelayQueueMachineFactory {
         log.info(String.format("延时队列机器{%s}开始运作", setDelayQueueName()));
 
         // 发生异常捕获并且继续不能让战斗停下来
-        while (true) {
+        while (flag) {
             try {
                 // 获取当前时间的时间戳
                 long now = System.currentTimeMillis() / 1000;
@@ -73,7 +75,7 @@ public abstract class AbstractDelayQueueMachineFactory {
             } finally {
                 // 间隔一秒钟搞一次
                 try {
-                    TimeUnit.SECONDS.sleep(5L);
+                    TimeUnit.SECONDS.sleep(60L);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -83,6 +85,14 @@ public abstract class AbstractDelayQueueMachineFactory {
 
     }
 
+    /**
+     * 销毁前停止所有
+     * @throws Exception
+     */
+    @Override
+    public void destroy() throws Exception {
+        flag = false;
+    }
     /**
      * 最终执行的任务方法
      *

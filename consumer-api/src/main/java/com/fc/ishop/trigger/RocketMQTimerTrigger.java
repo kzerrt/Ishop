@@ -49,7 +49,7 @@ public class RocketMQTimerTrigger implements TimeTrigger{
         }
         // 执行任务key
         String generateKey = TimeTriggerUtil.generateKey(timeTriggerMsg.getTriggerExecutor(), timeTriggerMsg.getTriggerTime(), uniqueKey);
-        this.cache.put(generateKey, 1, 3600L);
+        this.cache.put(generateKey, 1, 3600 * 5L);
         // 设置延时任务
         if (promotionDelayQueue.addJobId(JSONUtil.toJsonStr(timeTriggerMsg), delayTime)) {
             log.info("add Redis key {}", generateKey);

@@ -8,15 +8,19 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fc.ishop.dos.category.Category;
 import com.fc.ishop.dos.goods.Goods;
 import com.fc.ishop.dos.goods.GoodsGallery;
+import com.fc.ishop.dto.GoodsOperationDto;
 import com.fc.ishop.enums.GoodsAuthEnum;
 import com.fc.ishop.enums.GoodsStatusEnum;
 import com.fc.ishop.enums.ResultCode;
 import com.fc.ishop.exception.ServiceException;
 import com.fc.ishop.mapper.GoodsMapper;
+import com.fc.ishop.security.AuthUser;
+import com.fc.ishop.security.context.UserContext;
 import com.fc.ishop.service.*;
 import com.fc.ishop.utils.BeanUtil;
 import com.fc.ishop.utils.PageUtil;
 import com.fc.ishop.dto.GoodsSearchParams;
+import com.fc.ishop.vo.StoreVo;
 import com.fc.ishop.vo.goods.GoodsSkuVo;
 import com.fc.ishop.vo.goods.GoodsVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -139,6 +143,50 @@ public class GoodsServiceImpl
         baseMapper.underStoreGoods(storeId);
     }
 
+    @Override
+    public void addGoods(GoodsOperationDto goodsOperationDTO) {
+        Goods goods = new Goods(goodsOperationDTO);
+        //判定商品是否需要审核
+        goods.setIsAuth(GoodsAuthEnum.TOBEAUDITED.name());
+
+        // 向goods加入图片
+        this.setGoodsGalleryParam(goodsOperationDTO.getGoodsGalleryList().get(0), goods);
+
+        //商品添加卖家信息 （只存在管理员添加）
+        AuthUser currentUser = UserContext.getCurrentUser();
+        goods.setStoreId(currentUser.getId());
+        goods.setStoreName(currentUser.getNickName());
+        // 评论次数
+        goods.setCommentNum(0);
+        // 购买次数
+        goods.setBuyCount(0);
+
+        this.save(goods);
+
+        // 添加商品参数
+        if (goodsOperationDTO.getGoodsParamsList() != null && !goodsOperationDTO.getGoodsParamsList().isEmpty()) {
+            this.goodsParamsService.addParams(goodsOperationDTO.getGoodsParamsList(), goods.getId());
+        }
+
+        // 添加商品sku信息
+        this.goodsSkuService.add(goodsOperationDTO.getSkuList(), goods);
+
+        // 添加相册
+        if (goodsOperationDTO.getGoodsGalleryList() != null && !goodsOperationDTO.getGoodsGalleryList().isEmpty()) {
+            this.goodsGalleryService.add(goodsOperationDTO.getGoodsGalleryList(), goods.getId());
+        }
+    }
+    /**
+     * 添加商品默认图片
+     *
+     * @param origin 图片
+     * @param goods  商品
+     */
+    private void setGoodsGalleryParam(String origin, Goods goods) {
+        goods.setOriginal(origin);
+        goods.setSmall(origin);
+        goods.setThumbnail(origin);
+    }
     /**
      * 判断商品是否存在
      *

@@ -27,4 +27,6 @@ public interface GoodsParamsService extends IService<GoodsParams> {
      * @return 商品关联参数
      */
     List<GoodsParams> getGoodsParamsByGoodsId(String goodsId);
+
+    void addParams(List<GoodsParams> goodsParamsList, String id);
 }

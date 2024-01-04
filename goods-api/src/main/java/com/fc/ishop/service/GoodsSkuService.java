@@ -11,6 +11,7 @@ import com.fc.ishop.dto.GoodsSearchParams;
 import com.fc.ishop.vo.goods.GoodsSkuVo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author florence
@@ -63,4 +64,6 @@ public interface GoodsSkuService extends IService<GoodsSku> {
     List<GoodsSkuVo> getGoodsSkuVoList(List<GoodsSku> list);
 
     GoodsSku getGoodsSkuByIdFromCache(String skuId);
+
+    void add(List<Map<String, Object>> skuList, Goods goods);
 }

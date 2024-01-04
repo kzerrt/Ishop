@@ -3,6 +3,7 @@ package com.fc.ishop.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.fc.ishop.dos.goods.Goods;
+import com.fc.ishop.dto.GoodsOperationDto;
 import com.fc.ishop.enums.GoodsAuthEnum;
 import com.fc.ishop.enums.GoodsStatusEnum;
 import com.fc.ishop.dto.GoodsSearchParams;
@@ -53,4 +54,6 @@ public interface GoodsService extends IService<Goods> {
      * @param storeId 店铺id
      */
     void underStoreGoods(String storeId);
+
+    void addGoods(GoodsOperationDto goodsOperationDTO);
 }

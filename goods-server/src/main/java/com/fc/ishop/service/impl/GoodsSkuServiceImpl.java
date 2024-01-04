@@ -13,6 +13,7 @@ import com.fc.ishop.dos.goods.Goods;
 import com.fc.ishop.dos.goods.GoodsSku;
 import com.fc.ishop.enums.GoodsAuthEnum;
 import com.fc.ishop.enums.GoodsStatusEnum;
+import com.fc.ishop.exception.ServiceException;
 import com.fc.ishop.mapper.GoodsSkuMapper;
 import com.fc.ishop.service.GoodsSkuService;
 import com.fc.ishop.service.SpecValuesService;
@@ -27,6 +28,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -114,7 +116,18 @@ public class GoodsSkuServiceImpl
         return goodsSku;
     }
 
-    // todo 商品展示信息拼装
+    @Override
+    public void add(List<Map<String, Object>> skuList, Goods goods) {
+        List<GoodsSku> newSkuList;
+        // 如果有规格
+        if (skuList != null && !skuList.isEmpty()) {
+            // 添加商品sku
+            newSkuList = this.addGoodsSku(skuList, goods);
+        } else {
+            throw new ServiceException("规格必须要有一个！");
+        }
+    }
+
     private GoodsSkuVo getGoodsSkuVo(GoodsSku goodsSku) {
         GoodsSkuVo goodsSkuVO = new GoodsSkuVo(goodsSku);
         JSONObject jsonObject = JSONUtil.parseObj(goodsSku.getSpecs());
@@ -146,5 +159,38 @@ public class GoodsSkuServiceImpl
         goodsSkuVO.setGoodsGalleryList(goodsGalleryList);
         goodsSkuVO.setSpecList(specValueVOS);
         return goodsSkuVO;
+    }
+    /**
+     * 增加sku集合
+     *
+     * @param skuList sku列表
+     * @param goods   商品信息
+     */
+    private List<GoodsSku> addGoodsSku(List<Map<String, Object>> skuList, Goods goods) {
+        List<GoodsSku> skus = new ArrayList<>();
+        for (Map<String, Object> skuVO : skuList) {
+            Map<String, Object> resultMap = this.add(skuVO, goods);
+            GoodsSku goodsSku = (GoodsSku) resultMap.get("goodsSku");
+            if (goods.getSelfOperated() != null) {
+                goodsSku.setSelfOperated(goods.getSelfOperated());
+            }
+            skus.add(goodsSku);
+            //stringRedisTemplate.opsForValue().set(GoodsSkuService.getStockCacheKey(goodsSku.getId()), goodsSku.getQuantity().toString());
+        }
+        this.saveBatch(skus);
+        return skus;
+    }
+    /**
+     * 添加商品规格
+     *
+     * @param map   规格属性
+     * @param goods 商品
+     * @return 规格商品
+     */
+    private Map<String, Object> add(Map<String, Object> map, Goods goods) {
+        Map<String, Object> resultMap = new HashMap<>();
+        GoodsSku sku = new GoodsSku();
+        resultMap.put("goodsSku", sku);
+        return resultMap;
     }
 }

@@ -14,6 +14,7 @@ import com.fc.ishop.dos.trade.SecKillApply;
 import com.fc.ishop.dto.SecKillSearchParams;
 import com.fc.ishop.enums.PromotionStatusEnum;
 import com.fc.ishop.enums.PromotionTypeEnum;
+import com.fc.ishop.enums.SecKillApplyStatusEnum;
 import com.fc.ishop.exception.ServiceException;
 import com.fc.ishop.mapper.SecKillMapper;
 import com.fc.ishop.prop.RocketMQCustomProperties;
@@ -35,6 +36,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -63,7 +65,7 @@ public class SecKillServiceImpl
     /**
      * 将mongo数据库中的促销活动进行添加
      */
-    @PostConstruct
+    //@PostConstruct
     private void initPromotion() {
         SecKillSearchParams queryParam = new SecKillSearchParams();
         queryParam.setPromotionStatus(PromotionStatusEnum.NEW.name());
@@ -218,9 +220,25 @@ public class SecKillServiceImpl
 
         long current = System.currentTimeMillis() / 1000;
         long endTime = seckill.getEndTime().getTime() / 1000;
+        long applyEnd = seckill.getApplyEndTime().getTime() / 1000;
+
         // 比较当前时间与活动开始时间
         if (current - endTime < 0) {
+            // 将活动关闭
+            Query query = new Query(Criteria.where("id").is(seckill.getId()));
+            Update update = new Update();
+            update.set("promotionStatus", PromotionStatusEnum.END.name());
+            mongoTemplate.updateFirst(query, update, SecKillVo.class);
             return;
+        }
+        // 报名截止时间 小于当前时间
+        if (applyEnd < current) {
+            seckill.setSeckillApplyStatus(SecKillApplyStatusEnum.EXPIRE.name());
+            // 将活动状态修改
+            Query query = new Query(Criteria.where("id").is(seckill.getId()));
+            Update update = new Update();
+            update.set("seckillApplyStatus", SecKillApplyStatusEnum.EXPIRE.name());
+            mongoTemplate.updateFirst(query, update, SecKillVo.class);
         }
 
         addSeckillStartTask(seckill);

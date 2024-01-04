@@ -1,23 +1,17 @@
 package com.fc.ishop.controller.goods;
 
-import cn.hutool.core.date.DateTime;
-import cn.hutool.core.date.DateUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fc.ishop.dos.goods.Goods;
 import com.fc.ishop.dos.goods.GoodsSku;
+import com.fc.ishop.dto.GoodsOperationDto;
 import com.fc.ishop.enums.*;
 import com.fc.ishop.exception.ServiceException;
-import com.fc.ishop.security.context.UserContext;
 import com.fc.ishop.service.GoodsService;
 import com.fc.ishop.service.GoodsSkuService;
 import com.fc.ishop.dto.GoodsSearchParams;
-import com.fc.ishop.utils.StringUtils;
 import com.fc.ishop.vo.goods.GoodsVo;
 import com.fc.ishop.vo.ResultMessage;
 import com.fc.ishop.web.manager.GoodsManagerClient;
-import com.fc.ishop.web.manager.statistic.GoodsStatisticClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,7 +23,7 @@ import java.util.List;
  * @date 2023/12/15
  */
 @RestController
-public class GoodsManager implements GoodsManagerClient {
+public class GoodsController implements GoodsManagerClient {
     // 商品
     @Autowired
     private GoodsService goodsService;
@@ -58,6 +52,12 @@ public class GoodsManager implements GoodsManagerClient {
             return ResultUtil.success();
         }
         throw new ServiceException(ResultCode.GOODS_UNDER_ERROR);
+    }
+
+    @Override
+    public ResultMessage<GoodsOperationDto> save(GoodsOperationDto goodsOperationDTO) {
+        goodsService.addGoods(goodsOperationDTO);
+        return ResultUtil.success();
     }
 
     @Override
