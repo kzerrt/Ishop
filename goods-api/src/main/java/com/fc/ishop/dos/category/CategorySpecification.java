@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@TableName("li_category_specification")
+@TableName("i_category_specification")
 @NoArgsConstructor
 @AllArgsConstructor
 public class CategorySpecification extends BaseEntity {

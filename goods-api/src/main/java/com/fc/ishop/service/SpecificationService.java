@@ -24,6 +24,7 @@ public interface SpecificationService extends IService<Specification> {
      * @return
      */
     Page<SpecificationVo> getSpecificationPage(SpecificationSearchParams searchParams, PageVo pageVo);
+    Page<Specification> getSpecification(SpecificationSearchParams searchParams, PageVo pageVo);
     /**
      * 修改规格
      *
@@ -42,4 +43,6 @@ public interface SpecificationService extends IService<Specification> {
      * @return 商品规格值列表
      */
     List<GoodsSpecValueVo> getGoodsSpecValue(String categoryId);
+
+
 }

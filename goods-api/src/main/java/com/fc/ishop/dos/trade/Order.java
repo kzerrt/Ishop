@@ -22,7 +22,7 @@ import java.util.Optional;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@TableName("li_order")
+@TableName("i_order")
 public class Order extends BaseEntity {
 
     private static final long serialVersionUID = 2233811628066468683L;

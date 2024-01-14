@@ -1,13 +1,18 @@
 package com.fc.ishop.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fc.ishop.dos.SpecValues;
 import com.fc.ishop.dos.Specification;
 import com.fc.ishop.mapper.SpecValuesMapper;
 import com.fc.ishop.service.SpecValuesService;
 import com.fc.ishop.service.SpecificationService;
+import com.fc.ishop.utils.PageUtil;
+import com.fc.ishop.vo.PageVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,6 +59,18 @@ public class SpecValuesServiceImpl
         LambdaQueryWrapper<SpecValues> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.in(SpecValues::getSpecId, specIds);
         return baseMapper.selectList(queryWrapper);
+    }
+
+    @Override
+    public Page<SpecValues> queryByParams(String specId, String specVal, PageVo pageVo) {
+        LambdaQueryWrapper<SpecValues> queryWrapper = new LambdaQueryWrapper<>();
+        if (StrUtil.isNotEmpty(specId)) {
+            queryWrapper.eq(SpecValues::getSpecId, specId);
+        }
+        if (StrUtil.isNotEmpty(specVal)) {
+            queryWrapper.like(SpecValues::getSpecValue, specVal);
+        }
+        return this.page(PageUtil.initPage(pageVo), queryWrapper);
     }
 
     @Override

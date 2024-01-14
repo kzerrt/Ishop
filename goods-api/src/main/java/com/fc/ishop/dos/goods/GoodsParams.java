@@ -14,7 +14,7 @@ import org.hibernate.validator.constraints.Length;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@TableName("li_goods_params")
+@TableName("i_goods_params")
 public class GoodsParams extends BaseEntity {
     private static final long serialVersionUID = 1L;
 

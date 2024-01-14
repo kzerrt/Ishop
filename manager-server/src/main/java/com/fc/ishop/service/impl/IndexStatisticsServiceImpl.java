@@ -54,7 +54,7 @@ public class IndexStatisticsServiceImpl implements IndexStatisticsService {
         IndexStatisticsVo vo = new IndexStatisticsVo();
 
         // 统计订单
-        vo.setOrderNum(orderStatisticClient.orderNum(""));
+        //vo.setOrderNum(orderStatisticClient.orderNum(""));
         // 获取总会员数量
         vo.setMemberNum(memberStatisticsDataService.getMemberCount());
         // 获取上架商品数量

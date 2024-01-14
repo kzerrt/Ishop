@@ -83,4 +83,13 @@ public interface GoodsManagerClient {
      */
     @GetMapping("/manager-g/get/{id}")
     ResultMessage<GoodsVo> get(@PathVariable String id);
+
+    /**
+     * 更新商品信息
+     * @param goodsOperationDTO
+     * @param goodsId
+     * @return
+     */
+    @PostMapping("/manager-g/update/{goodsId}")
+    ResultMessage<GoodsOperationDto> update(@RequestBody GoodsOperationDto goodsOperationDTO, @PathVariable String goodsId);
 }

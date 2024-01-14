@@ -17,7 +17,7 @@ import java.util.Date;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@TableName("li_category")
+@TableName("i_category")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Category extends BaseEntity {
@@ -36,22 +36,18 @@ public class Category extends BaseEntity {
     //@ApiModelProperty(value = "排序值")
     private BigDecimal sortOrder;
 
-    //@ApiModelProperty(value = "佣金比例")
-    private Double commissionRate;
-
     //@ApiModelProperty(value = "分类图标")
     private String image;
 
     //@ApiModelProperty(value = "是否支持频道")
     private Boolean supportChannel;
 
-    public Category(String id, String createBy, Date createTime, String updateBy, Date updateTime, Boolean deleteFlag, String name, String parentId, Integer level, BigDecimal sortOrder, Double commissionRate, String image, Boolean supportChannel) {
+    public Category(String id, String createBy, Date createTime, String updateBy, Date updateTime, Boolean deleteFlag, String name, String parentId, Integer level, BigDecimal sortOrder,String image, Boolean supportChannel) {
         super(id, createBy, createTime, updateBy, updateTime, deleteFlag);
         this.name = name;
         this.parentId = parentId;
         this.level = level;
         this.sortOrder = sortOrder;
-        this.commissionRate = commissionRate;
         this.image = image;
         this.supportChannel = supportChannel;
     }

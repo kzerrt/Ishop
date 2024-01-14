@@ -83,4 +83,9 @@ public class GoodsController implements GoodsManagerClient {
         return ResultUtil.data(goods);
     }
 
+    @Override
+    public ResultMessage<GoodsOperationDto> update(GoodsOperationDto goodsOperationDto, String goodsId) {
+        return null;
+    }
+
 }

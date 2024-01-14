@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@TableName("li_spec_values")
+@TableName("i_spec_values")
 public class SpecValues extends BaseEntity {
     private static final long serialVersionUID = 1L;
 

@@ -47,7 +47,8 @@ public class AuthenticationInterceptor extends ZuulFilter {
         HttpServletRequest request = ctx.getRequest();
         // RequestContext.getCurrentContext().setRequest(); 新建一个请求
         if (ctx.getBoolean(ReqParam.ignore)) {// 公共请求 放行
-            //ctx.addZuulRequestHeader(SecurityEnum.AUTHENTICATED.getValue(), "true");
+            log.debug("公共请求放行- 添加认证请求头");
+            ctx.addZuulRequestHeader(SecurityEnum.AUTHENTICATED.getValue(), "true");
             // todo 网关拦截用户图片，并判断该图片是否是该用户
             return null;
         }

@@ -3,16 +3,21 @@ package com.fc.ishop.controller.goods;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fc.ishop.constant.SendParam;
 import com.fc.ishop.dos.Specification;
+import com.fc.ishop.dto.SpecificationSearchParams;
 import com.fc.ishop.vo.PageVo;
 import com.fc.ishop.vo.ResultMessage;
 import com.fc.ishop.vo.SpecificationVo;
 import com.fc.ishop.web.manager.SpecificationManagerClient;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -44,8 +49,20 @@ public class SpecificationManagerController {
 
 
     @GetMapping(value = "/page")
-    public ResultMessage<Page<SpecificationVo>> getByPage(@RequestParam(required = false) String specName, PageVo pageVo) {
-        return specificationManagerClient.getByPage(specName, pageVo);
+    public ResultMessage<Page<SpecificationVo>> getByPage(SpecificationSearchParams params, PageVo pageVo) {
+        Gson gson = new Gson();
+        Map<String, String> send = new HashMap<>();
+        send.put(SendParam.specificationSearchParams, gson.toJson(params));
+        send.put(SendParam.pageVo, gson.toJson(pageVo));
+        return specificationManagerClient.getByPage(send);
+    }
+    @GetMapping(value = "/pageStore")
+    public ResultMessage<Page<Specification>> storePage(SpecificationSearchParams params, PageVo pageVo) {
+        Gson gson = new Gson();
+        Map<String, String> send = new HashMap<>();
+        send.put(SendParam.specificationSearchParams, gson.toJson(params));
+        send.put(SendParam.pageVo, gson.toJson(pageVo));
+        return specificationManagerClient.getSpecification(send);
     }
 
     @PutMapping

@@ -12,4 +12,5 @@ public interface SendParam {
     String memberSearchVo = "memberSearchVo";
     String secKillSearchParams = "secKillSearchParams";
     String storeSearchParams = "storeSearchParams";
+    String specificationSearchParams = "specificationSearchParams";
 }

@@ -234,8 +234,7 @@ public class StringUtils extends StrUtil{
         Random random = new Random();
         StringBuilder sRand = new StringBuilder();
         for (int i = 0; i < n; i++) {
-            String rand = String.valueOf(random.nextInt(10));
-            sRand.append(rand);
+            sRand.append(random.nextInt(10));
         }
         return sRand.toString();
     }

@@ -15,7 +15,7 @@ import java.io.Serializable;
  * @date 2023/12/15
  */
 @Data
-@TableName("li_goods_gallery")
+@TableName("i_goods_gallery")
 public class GoodsGallery implements Serializable {
 
     @TableId

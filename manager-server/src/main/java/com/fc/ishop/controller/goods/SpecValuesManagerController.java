@@ -1,6 +1,9 @@
 package com.fc.ishop.controller.goods;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.fc.ishop.dos.SpecValues;
+import com.fc.ishop.enums.ResultUtil;
+import com.fc.ishop.vo.PageVo;
 import com.fc.ishop.vo.ResultMessage;
 import com.fc.ishop.web.manager.SpecValuesManagerClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +26,11 @@ public class SpecValuesManagerController {
     @GetMapping(value = "/values/{id}")
     public ResultMessage<List<SpecValues>> list(@PathVariable("id") String id) {
         return specValuesManagerClient.list(id);
+    }
+    //(value = "查询规格值列表")
+    @GetMapping(value = "/value/{id}")// store
+    public ResultMessage<IPage<SpecValues>> list(@PathVariable("id") String id, String specVal, PageVo pageVo) {
+        return ResultUtil.data(specValuesManagerClient.queryByParams(id, specVal, pageVo));
     }
 
     @PostMapping(value = "/save/{specId}")

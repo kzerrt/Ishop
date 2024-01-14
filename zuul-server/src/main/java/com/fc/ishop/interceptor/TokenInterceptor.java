@@ -56,6 +56,7 @@ public class TokenInterceptor extends ZuulFilter {
         String requestURI = request.getRequestURI();
         if (StringUtils.matchUri(requestURI, ignoreProperties.getUrls())) {// 判断是否是可忽略uri
             ctx.set(ReqParam.ignore);
+            log.info("请求 {} 方行", requestURI);
             return null;
         }
         String accessToken = request.getHeader(SecurityEnum.HEADER_TOKEN.getValue());

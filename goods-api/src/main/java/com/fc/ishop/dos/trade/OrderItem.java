@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@TableName("li_order_item")
+@TableName("i_order_item")
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderItem extends BaseEntity {

@@ -70,7 +70,7 @@ ignored:
   urls:
     - /**/user/login
     - /**/user/refresh/**
-    - /common/upload/**
+    - /common/upload/image/**
 logging:
   level:
     com.fc.ishop: debug

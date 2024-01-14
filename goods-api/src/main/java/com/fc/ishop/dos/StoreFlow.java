@@ -23,8 +23,8 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "li_store_flow")
-@TableName("li_store_flow")
+@Table(name = "i_store_flow")
+@TableName("i_store_flow")
 public class StoreFlow {
     @Id
     @TableId

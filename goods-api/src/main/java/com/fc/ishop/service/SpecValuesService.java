@@ -1,7 +1,10 @@
 package com.fc.ishop.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.fc.ishop.dos.SpecValues;
+import com.fc.ishop.vo.PageVo;
 
 import java.util.List;
 
@@ -18,6 +21,15 @@ public interface SpecValuesService extends IService<SpecValues> {
      * @return
      */
     List<SpecValues> getSpecValues(List<String> specIds);
+    /**
+     * 分页获取规格值
+     *
+     * @param specId  规格项ID
+     * @param specVal 规格值
+     * @param pageVo  分页参数
+     * @return 规格值列表
+     */
+    Page<SpecValues> queryByParams(String specId, String specVal, PageVo pageVo);
     /**
      * 根据值获取规格值信息
      * 如果不存在则自动创建

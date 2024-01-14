@@ -27,6 +27,12 @@ public interface CategoryManagerClient {
      * @return
      */
     @GetMapping("/manager-c/category/allChildren")
+    ResultMessage<List<CategoryVo>> listAll();
+    /**
+     * 获取所有分类,不包括禁用
+     * @return
+     */
+    @GetMapping("/manager-c/category/all")
     ResultMessage<List<CategoryVo>> list();
 
     /**

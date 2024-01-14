@@ -15,7 +15,7 @@ import java.util.List;
  * @date 2023/12/26
  */
 public interface OrderStatisticsDataMapper extends BaseMapper<StoreFlow> {
-    @Select("SELECT DATE_FORMAT(create_time,'%Y-%m-%d') AS create_time,sum(flow_price) AS price FROM li_order " +
+    @Select("SELECT DATE_FORMAT(create_time,'%Y-%m-%d') AS create_time,sum(flow_price) AS price FROM i_order " +
             " ${ew.customSqlSegment}")
     List<OrderStatisticsDataVo> getOrderStatisticsData(@Param(Constants.WRAPPER) QueryWrapper queryWrapper);
 }

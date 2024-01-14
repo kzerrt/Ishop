@@ -15,6 +15,7 @@ import com.fc.ishop.vo.ResultMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,8 +41,7 @@ public class UploadController {
 
     // todo 用户上传文件时在不保存的情况下依然会将文件下载
     @PostMapping("/file")
-    public ResultMessage<Object> upload(MultipartFile file,
-                                        String base) {
+    public ResultMessage<String> upload(@RequestBody MultipartFile file) {
         if (file == null) {
             throw new ServiceException(ResultCode.OSS_EXCEPTION);
         }
@@ -80,6 +80,7 @@ public class UploadController {
             throw new ServiceException(ResultCode.OSS_EXCEPTION);
         }
         // 将文件名称发送到前端
+        log.debug("上传的图片路径为：{}", newFile.getUrl());
         return ResultUtil.data(newFile.getUrl());
     }
 }

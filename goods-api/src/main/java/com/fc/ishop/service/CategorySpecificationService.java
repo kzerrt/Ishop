@@ -18,7 +18,13 @@ public interface CategorySpecificationService extends IService<CategorySpecifica
      * @return 分类规格关联信息
      */
     List<CategorySpecificationVo> getCategorySpecList(String categoryId);
-
+    /***
+     * 根据分类id查询规格信息
+     *
+     * @param categoryId 分类id
+     * @return 分类规格关联信息
+     */
+    List<CategorySpecification> getCategorySpecList(String[] categoryId);
     /**
      * 保存分类规格
      * @param categoryId

@@ -25,7 +25,7 @@ public class CategoryParameterGroupManagerController {
      * @param categoryId
      * @return
      */
-    @GetMapping(value = "/{categoryId}")
+    @GetMapping(value = "/get//{categoryId}")
     public ResultMessage<List<ParameterGroupVo>> getCategoryParam(@PathVariable String categoryId) {
         return managerClient.getCategoryParam(categoryId);
     }

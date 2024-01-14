@@ -14,7 +14,7 @@ import javax.validation.constraints.NotEmpty;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@TableName("li_goods_unit")
+@TableName("i_goods_unit")
 public class GoodsUnit extends BaseEntity {
 
     @NotEmpty(message = "计量单位名称不能为空")

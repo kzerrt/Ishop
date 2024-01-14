@@ -1,12 +1,11 @@
 package com.fc.ishop.web.manager;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fc.ishop.dos.SpecValues;
+import com.fc.ishop.vo.PageVo;
 import com.fc.ishop.vo.ResultMessage;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -29,4 +28,6 @@ public interface SpecValuesManagerClient {
     @PostMapping("/manager-sv/save/{specId}")
     ResultMessage<List<SpecValues>> saveSpecValue(@PathVariable String specId,
                                                   @NotNull(message = "至少添加一个规格值") @RequestParam String[] specValue);
+    @PostMapping("/manager-sv/value/{id}")// store
+    Page<SpecValues> queryByParams(@PathVariable String id,@RequestParam("specVal") String specVal,@RequestBody PageVo pageVo);
 }

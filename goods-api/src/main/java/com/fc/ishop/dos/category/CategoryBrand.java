@@ -20,7 +20,7 @@ import java.util.Date;
  * @date 2023/12/11
  */
 @Data
-@TableName("li_category_brand")
+@TableName("i_category_brand")
 @NoArgsConstructor
 public class CategoryBrand implements Serializable {
     private static final long serialVersionUID = 3315719881926878L;

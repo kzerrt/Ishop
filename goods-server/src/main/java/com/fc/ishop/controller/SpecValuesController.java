@@ -1,8 +1,11 @@
 package com.fc.ishop.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fc.ishop.dos.SpecValues;
 import com.fc.ishop.enums.ResultUtil;
 import com.fc.ishop.service.SpecValuesService;
+import com.fc.ishop.vo.PageVo;
 import com.fc.ishop.vo.ResultMessage;
 import com.fc.ishop.web.manager.SpecValuesManagerClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,5 +34,10 @@ public class SpecValuesController implements SpecValuesManagerClient {
         //重新添加
         List<SpecValues> list = specValuesService.saveSpecValue(specId, specValue);
         return ResultUtil.data(list);
+    }
+
+    @Override
+    public Page<SpecValues> queryByParams(String id, String specVal, PageVo pageVo) {
+        return specValuesService.queryByParams(id, specVal, pageVo);
     }
 }

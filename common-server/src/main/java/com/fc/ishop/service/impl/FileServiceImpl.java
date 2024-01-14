@@ -1,6 +1,7 @@
 package com.fc.ishop.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -81,13 +82,13 @@ public class FileServiceImpl
 
     @Override
     public Page<IFile> customerPage(IFile file, SearchVo searchVo, PageVo pageVo) {
-        LambdaQueryWrapper<IFile> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.like(StringUtils.isNotEmpty(file.getName()), IFile::getName, file.getName())
-                .like(StringUtils.isNotEmpty(file.getFileType()), IFile::getFileType, file.getFileType())
+        QueryWrapper<IFile> lambdaQueryWrapper = new QueryWrapper<>();
+        lambdaQueryWrapper.like(StringUtils.isNotEmpty(file.getName()), "name", file.getName())
+                .like(StringUtils.isNotEmpty(file.getFileType()), "file_type", file.getFileType())
                 .between(StringUtils.isNotEmpty(searchVo.getStartDate()) && StringUtils.isNotEmpty(searchVo.getEndDate()),
-                IFile::getCreateTime, searchVo.getStartDate(), searchVo.getEndDate());
+                "creat_time", searchVo.getStartDate(), searchVo.getEndDate());
 
-        return this.page(PageUtil.initPage(pageVo), query());
+        return this.page(PageUtil.initPage(pageVo), lambdaQueryWrapper);
     }
 
     @Override

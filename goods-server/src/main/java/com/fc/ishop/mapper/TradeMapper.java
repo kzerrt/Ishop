@@ -10,6 +10,6 @@ import org.apache.ibatis.annotations.Update;
  */
 public interface TradeMapper extends BaseMapper<Trade> {
 
-    @Update("UPDATE li_trade SET flow_price =(SELECT SUM(flow_price) FROM li_order WHERE trade_sn=#{tradeSn}) WHERE sn=#{tradeSn}")
+    @Update("UPDATE li_trade SET flow_price =(SELECT SUM(flow_price) FROM i_order WHERE trade_sn=#{tradeSn}) WHERE sn=#{tradeSn}")
     void updateTradePrice(String tradeSn);
 }

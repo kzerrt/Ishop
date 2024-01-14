@@ -14,7 +14,7 @@ import javax.validation.constraints.NotEmpty;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@TableName("li_specification")
+@TableName("i_specification")
 public class Specification extends BaseEntity {
     private static final long serialVersionUID = 147792597901239486L;
 

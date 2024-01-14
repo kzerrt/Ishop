@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@TableName("li_seckill_apply")
+@TableName("i_seckill_apply")
 public class SecKillApply extends BaseEntity {
 
     private static final long serialVersionUID = 5440164641970820989L;

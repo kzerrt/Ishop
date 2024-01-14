@@ -17,7 +17,7 @@ import java.util.Date;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@TableName("li_goods_sku")
+@TableName("i_goods_sku")
 public class GoodsSku extends BaseEntity {
     private static final long serialVersionUID = 4865908658161118934L;
 

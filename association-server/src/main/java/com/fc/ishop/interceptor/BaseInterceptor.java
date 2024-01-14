@@ -34,6 +34,7 @@ public class BaseInterceptor implements HandlerInterceptor {
         if (ignoreProperties == null) {
             log.warn("IgnoreProperties is null");
         }
+        log.info("ignoreProperties size is {}", ignoreProperties.getUrls().size());
     }
 
     // 在处理方法前调用
@@ -50,7 +51,7 @@ public class BaseInterceptor implements HandlerInterceptor {
         String user = request.getHeader(SecurityEnum.USER_CONTEXT.getValue());
         //log.debug("header : {}, param :{}", accessToken, authentication);
         if (StringUtils.isEmpty(authentication) || !"true".equals(authentication)) {
-            log.debug("请求 {} 被拦截， 请求参数不正确. userContext : {}, authentication : {}",
+            log.error("请求 {} 被拦截， 请求参数不正确. userContext : {}, authentication : {}",
                     request.getRequestURI(), user, authentication);
             return false;
         }
@@ -85,6 +86,9 @@ public class BaseInterceptor implements HandlerInterceptor {
     private boolean checkUrl(HttpServletRequest request) {
         if (request == null) {
             throw new ServiceException(ResultCode.PARAMS_ERROR);
+        }
+        if (ignoreProperties == null || ignoreProperties.getUrls().size() < 1) {
+            return false;
         }
         // 获取uri
         String requestURI = request.getRequestURI();

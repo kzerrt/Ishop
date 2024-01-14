@@ -22,7 +22,11 @@ public class PlatformServiceImpl implements PlatformService {
     public Long online() {
         Object o = cache.get(CachePrefix.ONLINE_NUM.getPrefix());
         if (o != null) {
-            return (Long) o;
+            if (o instanceof Integer) {
+                return ((Integer) o).longValue();
+            } else {
+                return 1L;
+            }
         }
         // 每隔10分钟统计有效token
         int size = cache.keys(CachePrefix.ACCESS_TOKEN.getPrefix() + "*").size();

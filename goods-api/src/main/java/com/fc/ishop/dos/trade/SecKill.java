@@ -17,7 +17,7 @@ import java.util.Date;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@TableName("li_seckill")
+@TableName("i_seckill")
 public class SecKill extends BasePromotion {
     private static final long serialVersionUID = -9116425737163730836L;
 

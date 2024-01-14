@@ -16,7 +16,7 @@ import javax.validation.constraints.Max;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@TableName("li_goods")
+@TableName("i_goods")
 public class Goods extends BaseEntity {
     private static final long serialVersionUID = 370683495251252601L;
     /**
@@ -163,17 +163,10 @@ public class Goods extends BaseEntity {
         this.sn = goodsOperationDTO.getSn();
         this.price = goodsOperationDTO.getPrice();
         this.weight = goodsOperationDTO.getWeight();
-        this.freightPayer = goodsOperationDTO.getFreightPayer();
-        this.templateId = goodsOperationDTO.getTemplateId();
-        this.recommend = goodsOperationDTO.isRecommend();
         this.sellingPoint = goodsOperationDTO.getSellingPoint();
-        this.salesModel = goodsOperationDTO.getSalesModel();
         this.goodsUnit = goodsOperationDTO.getGoodsUnit();
         this.intro = goodsOperationDTO.getIntro();
-        this.mobileIntro = goodsOperationDTO.getMobileIntro();
         this.cost = goodsOperationDTO.getCost();
-        //如果立即上架则
-        this.marketEnable = goodsOperationDTO.isRelease() ? GoodsStatusEnum.UPPER.name() : GoodsStatusEnum.DOWN.name();
 
     }
 }

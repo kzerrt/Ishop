@@ -24,7 +24,7 @@ public interface CategoryParameterGroupManagerClient {
      * @param categoryId
      * @return
      */
-    @GetMapping("/manager-cpg/{categoryId}")
+    @GetMapping("/manager-cpg/get/{categoryId}")
     ResultMessage<List<ParameterGroupVo>> getCategoryParam(@PathVariable String categoryId);
 
     /**

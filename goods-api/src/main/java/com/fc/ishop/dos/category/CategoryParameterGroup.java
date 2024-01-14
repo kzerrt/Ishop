@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@TableName("li_category_parameter_group")
+@TableName("i_category_parameter_group")
 public class CategoryParameterGroup extends BaseEntity {
     private static final long serialVersionUID = -3254446505349029420L;
 

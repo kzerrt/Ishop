@@ -22,6 +22,6 @@ public interface StoreMapper extends BaseMapper<Store> {
      * @param queryWrapper 查询条件
      * @return 店铺VO分页列表
      */
-    @Select("select s.* from li_store as s ${ew.customSqlSegment}")
+    @Select("select s.* from i_store as s ${ew.customSqlSegment}")
     Page<StoreVo> getStoreList(IPage<StoreVo> page, @Param(Constants.WRAPPER) Wrapper<StoreVo> queryWrapper);
 }

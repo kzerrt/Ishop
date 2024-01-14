@@ -9,6 +9,6 @@ import org.apache.ibatis.annotations.Update;
  * @date 2023/12/11
  */
 public interface GoodsMapper extends BaseMapper<Goods> {
-    @Update("update li_goods set market_enable = 0 WHERE store_id = #{storeId}")
+    @Update("update i_goods set market_enable = 0 WHERE store_id = #{storeId}")
     void underStoreGoods(String storeId);
 }

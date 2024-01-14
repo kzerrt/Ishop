@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
  * @date 2023/12/18
  */
 @Data
-@TableName("li_trade")
+@TableName("i_trade")
 @NoArgsConstructor
 public class Trade extends BaseEntity {
     private static final long serialVersionUID = 5177608752643561827L;

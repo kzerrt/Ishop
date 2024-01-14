@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.fc.ishop.dos.Member;
 import com.fc.ishop.dto.MemberAddDto;
 import com.fc.ishop.dto.MemberEditDto;
+import com.fc.ishop.token.Token;
 import com.fc.ishop.vo.MemberSearchVo;
 import com.fc.ishop.vo.PageVo;
 
@@ -52,4 +53,18 @@ public interface MemberService extends IService<Member> {
      * @return
      */
     Integer getMemberNum(MemberSearchVo memberSearchVo);
+
+    /**
+     * 手机号，验证码登录
+     * @param mobile
+     * @return
+     */
+    Token mobilePhoneLogin(String mobile, String code, String uuid);
+
+    /**
+     * 获取用户信息
+     * @return
+     */
+    Member getUserInfo();
+
 }

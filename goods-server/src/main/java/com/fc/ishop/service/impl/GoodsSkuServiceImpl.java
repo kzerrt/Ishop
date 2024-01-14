@@ -132,16 +132,10 @@ public class GoodsSkuServiceImpl
         GoodsSkuVo goodsSkuVO = new GoodsSkuVo(goodsSku);
         JSONObject jsonObject = JSONUtil.parseObj(goodsSku.getSpecs());
         List<SpecValueVo> specValueVOS = new ArrayList<>();
-        List<String> goodsGalleryList = new ArrayList<>();
         for (Map.Entry<String, Object> entry : jsonObject.entrySet()) {
             SpecValueVo s = new SpecValueVo();
             if (entry.getKey().equals("images")) {
                 s.setSpecName(entry.getKey());
-                if (entry.getValue().toString().contains("url")) {
-                    List<SpecValueVo.SpecImages> specImages = JSONUtil.toList(JSONUtil.parseArray(entry.getValue()), SpecValueVo.SpecImages.class);
-                    s.setSpecImage(specImages);
-                    goodsGalleryList = specImages.stream().map(SpecValueVo.SpecImages::getUrl).collect(Collectors.toList());
-                }
             } else {
                 SpecificationVo specificationVO = new SpecificationVo();
                 specificationVO.setSpecName(entry.getKey());
@@ -156,7 +150,6 @@ public class GoodsSkuServiceImpl
             }
             specValueVOS.add(s);
         }
-        goodsSkuVO.setGoodsGalleryList(goodsGalleryList);
         goodsSkuVO.setSpecList(specValueVOS);
         return goodsSkuVO;
     }

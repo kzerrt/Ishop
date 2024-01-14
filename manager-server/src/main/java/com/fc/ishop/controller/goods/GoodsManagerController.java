@@ -4,6 +4,7 @@ package com.fc.ishop.controller.goods;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fc.ishop.dos.goods.Goods;
 import com.fc.ishop.dos.goods.GoodsSku;
+import com.fc.ishop.dto.GoodsOperationDto;
 import com.fc.ishop.dto.GoodsSearchParams;
 import com.fc.ishop.vo.ResultMessage;
 import com.fc.ishop.vo.goods.GoodsVo;
@@ -63,6 +64,7 @@ public class GoodsManagerController {
     /**
      *管理员上架商品
      */
+    @PutMapping(value = "/{goodsId}/up")
     public ResultMessage<Object> unpGoods(@PathVariable List<String> goodsId) {
         return goodsManagerClient.unpGoods(goodsId);
     }
@@ -73,5 +75,15 @@ public class GoodsManagerController {
     @GetMapping(value = "/get/{id}")
     public ResultMessage<GoodsVo> get(@PathVariable String id) {
         return goodsManagerClient.get(id);
+    }
+
+    //(value = "修改商品")
+    @PutMapping(value = "/update/{goodsId}", consumes = "application/json", produces = "application/json")
+    public ResultMessage<GoodsOperationDto> update(@RequestBody GoodsOperationDto goodsOperationDTO, @PathVariable String goodsId) {
+        return goodsManagerClient.update(goodsOperationDTO, goodsId);
+    }
+    @PutMapping(value = "/save", consumes = "application/json", produces = "application/json")
+    public ResultMessage<GoodsOperationDto> save(@RequestBody GoodsOperationDto goodsOperationDTO) {
+        return goodsManagerClient.save(goodsOperationDTO);
     }
 }

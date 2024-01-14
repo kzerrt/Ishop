@@ -1,5 +1,6 @@
 package com.fc.ishop.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -53,6 +54,24 @@ public class SpecificationServiceImpl
         Page<SpecificationVo> page = new Page<>(pageVo.getPageNumber(), pageVo.getPageSize(), specList.size());
         page.setRecords(PageUtil.listToPage(pageVo, specList));
         return page;
+    }
+
+    @Override
+    public Page<Specification> getSpecification(SpecificationSearchParams searchParams, PageVo pageVo) {
+        QueryWrapper<Specification> queryWrapper = null;
+        if (searchParams != null) {
+            List<String> specIds = new ArrayList<>();
+            if (StrUtil.isNotEmpty(searchParams.getCategoryPath())) {
+                String categoryPath = searchParams.getCategoryPath();
+                List<CategorySpecification> categorySpecList = categorySpecificationService.getCategorySpecList(categoryPath.split(","));
+                categorySpecList.forEach(i -> specIds.add(i.getSpecificationId()));
+            }
+            queryWrapper = searchParams.queryWrapper();
+            queryWrapper.in("id", specIds);
+        } else {
+            queryWrapper = new QueryWrapper<>();
+        }
+        return this.page(PageUtil.initPage(pageVo), queryWrapper);
     }
 
     @Override

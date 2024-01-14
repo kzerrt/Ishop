@@ -5,8 +5,8 @@
 
     <select id="findSpecList" resultType="com.fc.ishop.vo.SpecificationVo" parameterType="map">
         SELECT s.id, s.spec_name,s.create_time ,GROUP_CONCAT(sv.spec_value SEPARATOR ',') AS spec_value
-        FROM li_specification s
-        LEFT JOIN li_spec_values sv
+        FROM i_specification s
+        LEFT JOIN i_spec_values sv
         ON s.id = sv.spec_id
         WHERE 1=1
         <if test="specName != null and specName!=''">

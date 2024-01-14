@@ -18,7 +18,7 @@ import java.util.List;
  */
 public interface GoodsStatisticsDataMapper extends BaseMapper<StoreFlow> {
     //商品统计
-    @Select("SELECT goods_id,goods_name,SUM(final_price) AS price,SUM(num) AS num FROM li_store_flow ${ew.customSqlSegment}")
+    @Select("SELECT goods_id,goods_name,SUM(final_price) AS price,SUM(num) AS num FROM i_store_flow ${ew.customSqlSegment}")
     List<GoodsStatisticsDataVo> getGoodsStatisticsData(IPage<GoodsStatisticsDataVo> page, @Param(Constants.WRAPPER) Wrapper<GoodsStatisticsDataVo> queryWrapper);
 
     /*//分类统计

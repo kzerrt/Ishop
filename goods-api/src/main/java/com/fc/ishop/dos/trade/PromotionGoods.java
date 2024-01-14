@@ -19,7 +19,7 @@ import java.util.Date;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@TableName("li_promotion_goods")
+@TableName("i_promotion_goods")
 @NoArgsConstructor
 public class PromotionGoods extends BaseEntity {
 

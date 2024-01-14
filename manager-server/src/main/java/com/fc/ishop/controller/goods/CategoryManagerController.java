@@ -38,10 +38,18 @@ public class CategoryManagerController {
      * @return
      */
     @GetMapping(value = "/allChildren")
+    public ResultMessage<List<CategoryVo>> listAll() {
+        return categoryManagerClient.listAll();
+    }
+
+    /**
+     * 查询所有分类不包括禁用的
+     * @return
+     */
+    @GetMapping(value = "/all")
     public ResultMessage<List<CategoryVo>> list() {
         return categoryManagerClient.list();
     }
-
     @PostMapping
     public ResultMessage<Category> saveCategory(@Valid Category category) {
         return categoryManagerClient.saveCategory(category);

@@ -56,6 +56,9 @@ public class PageUtil {
      * @return
      */
     public static <T> Page<T> initPage(PageVo pagevo) {
+        if (pagevo == null) {
+            pagevo = new PageVo();
+        }
         Page<T> page;
         // 获取基本信息
         int pageNumber = pagevo.getPageNumber();

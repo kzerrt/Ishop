@@ -35,6 +35,10 @@ public class CategoryController implements CategoryManagerClient {
     }
 
     @Override
+    public ResultMessage<List<CategoryVo>> listAll() {
+        return ResultUtil.data(categoryService.listAllChildren());
+    }
+    @Override
     public ResultMessage<List<CategoryVo>> list() {
         return ResultUtil.data(categoryService.listAllChildren());
     }

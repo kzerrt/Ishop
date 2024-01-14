@@ -23,9 +23,6 @@ public class GoodsSkuVo extends GoodsSku{
     //@ApiModelProperty(value = "规格列表")
     private List<SpecValueVo> specList;
 
-    //@ApiModelProperty(value = "商品图片")
-    private List<String> goodsGalleryList;
-
     public GoodsSkuVo(GoodsSku goodsSku) {
         BeanUtil.copyProperties(goodsSku, this);
     }

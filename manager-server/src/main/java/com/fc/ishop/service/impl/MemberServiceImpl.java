@@ -5,23 +5,31 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.fc.ishop.cache.Cache;
+import com.fc.ishop.cache.CachePrefix;
 import com.fc.ishop.dos.Member;
 import com.fc.ishop.dto.MemberAddDto;
 import com.fc.ishop.dto.MemberEditDto;
 import com.fc.ishop.enums.ResultCode;
 import com.fc.ishop.enums.SwitchEnum;
+import com.fc.ishop.enums.UserEnums;
 import com.fc.ishop.exception.ServiceException;
 import com.fc.ishop.mapper.MemberMapper;
 import com.fc.ishop.security.AuthUser;
 import com.fc.ishop.security.context.UserContext;
 import com.fc.ishop.service.MemberService;
+import com.fc.ishop.token.ManagerTokenGenerate;
+import com.fc.ishop.token.Token;
 import com.fc.ishop.utils.BeanUtil;
 import com.fc.ishop.utils.PageUtil;
 import com.fc.ishop.utils.StringUtils;
+import com.fc.ishop.utils.UuidUtils;
 import com.fc.ishop.vo.MemberSearchVo;
 import com.fc.ishop.vo.PageVo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,6 +39,10 @@ import java.util.List;
 @Service("memberService")
 public class MemberServiceImpl
         extends ServiceImpl<MemberMapper, Member> implements MemberService {
+    @Autowired
+    private ManagerTokenGenerate managerTokenGenerate;
+    @Autowired
+    private Cache<String> cache;
     @Override
     public Member findByUsername(String username) {
         QueryWrapper<Member> queryWrapper = new QueryWrapper();
@@ -108,6 +120,44 @@ public class MemberServiceImpl
         queryWrapper.like(StringUtils.isNotBlank(memberSearchVo.getDisabled()), "disabled", memberSearchVo.getDisabled());
         queryWrapper.orderByDesc("create_time");
         return this.count(queryWrapper);
+    }
+
+    @Override
+    public Token mobilePhoneLogin(String mobilePhone, String code, String uuid) {
+        // 验证 验证码是否正确
+        String sysCode = cache.get(CachePrefix.SMS_CODE.getPrefix() + "LOGIN" + uuid);
+        if (StringUtils.isEmpty(sysCode)) {
+            throw new ServiceException(ResultCode.VERIFICATION_SMS_EXPIRED_ERROR);
+        }
+        if (!sysCode.equals(code)) {
+            throw new ServiceException(ResultCode.VERIFICATION_SMS_ERROR);
+        }
+        QueryWrapper<Member> queryWrapper = new QueryWrapper();
+        queryWrapper.eq("mobile", mobilePhone);
+        Member member = baseMapper.selectOne(queryWrapper);
+        //如果手机号不存在则自动注册用户
+        if (member == null) {
+            member = new Member(mobilePhone, UuidUtils.getUUID(), mobilePhone);
+            //保存会员
+            this.save(member);
+            // todo 发送会员添加消息
+            /*String destination = rocketmqCustomProperties.getMemberTopic() + ":" + MemberTagsEnum.MEMBER_REGISTER.name();
+            rocketMQTemplate.asyncSend(destination, member, RocketmqSendCallbackBuilder.commonCallback());*/
+        }
+        member.setLastLoginDate(new Date());
+        this.updateById(member);
+        return managerTokenGenerate
+                .createToken(new AuthUser(member.getUsername(), member.getId(),member.getNickName(), UserEnums.MEMBER),
+                        false);
+    }
+
+    @Override
+    public Member getUserInfo() {
+        AuthUser tokenUser = UserContext.getCurrentUser();
+        if (tokenUser == null) {
+            throw new ServiceException(ResultCode.USER_NOT_LOGIN);
+        }
+        return this.findByUsername(tokenUser.getUsername());
     }
 
     private void checkMember(String username, String mobile) {

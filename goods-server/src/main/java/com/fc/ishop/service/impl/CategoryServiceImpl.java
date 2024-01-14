@@ -106,8 +106,7 @@ public class CategoryServiceImpl
                 .set("name", category.getName())
                 .set("image", category.getImage())
                 .set("sort_order", category.getSortOrder())
-                .set("delete_flag", category.getDeleteFlag())
-                .set("commission_rate", category.getCommissionRate());
+                .set("delete_flag", category.getDeleteFlag());
         removeCache(updateWrapper, this::update);
     }
 

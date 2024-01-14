@@ -46,7 +46,6 @@ public class AuthorizationInterceptor extends ZuulFilter {
         //log.debug("请求进入授权 filter");
         RequestContext ctx = RequestContext.getCurrentContext();
         if (ctx.getBoolean(ReqParam.ignore)) { // 访问公共页
-            // todo 上层拦截到common网页资源，此处判断是否为该用户的图片
             return null;
         }
         if (!ctx.getBoolean(SecurityEnum.AUTHENTICATED.getValue())) {// 用户未授权
@@ -69,7 +68,7 @@ public class AuthorizationInterceptor extends ZuulFilter {
             }
         }
         // 设置认证通过请求头
-        ctx.addZuulRequestHeader(SecurityEnum.AUTHENTICATED.getValue(), "true");
+        //ctx.addZuulRequestHeader(SecurityEnum.AUTHENTICATED.getValue(), "true");
         //log.debug("{} 请求头设置成功 {}", SecurityEnum.AUTHENTICATED.getValue(), uri);
         return null;
     }

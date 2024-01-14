@@ -32,10 +32,6 @@ public enum CachePrefix {
      */
     CATEGORY,
     /**
-     * 系统设置
-     */
-    SETTING,
-    /**
      * 商品详情
      */
     GOODS_SKU,
@@ -44,9 +40,18 @@ public enum CachePrefix {
      */
     SKU_STOCK,
     /**
+     * 判断用户是否发送验证码
+     */
+    VERIFICATION_RESULT,
+    /**
+     * 验证码
+     */
+    SMS_CODE,
+    /**
      * 商品
      */
     GOODS;
+
 
 
     public static String removePrefix(String str) {

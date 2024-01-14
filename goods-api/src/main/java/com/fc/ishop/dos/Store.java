@@ -23,7 +23,7 @@ import java.util.Date;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@TableName("li_store")
+@TableName("i_store")
 @NoArgsConstructor
 public class Store extends BaseEntity {
     private static final long serialVersionUID = -5861767726387892272L;

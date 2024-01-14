@@ -10,6 +10,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 规格项管理
@@ -37,8 +38,9 @@ public interface SpecificationManagerClient {
      * 分页获取
      */
     @PostMapping("/manager-s/page")
-    ResultMessage<Page<SpecificationVo>> getByPage(@RequestParam(required = false) String specName, @RequestBody PageVo pageVo);
-
+    ResultMessage<Page<SpecificationVo>> getByPage(@RequestBody Map<String, String> send);
+    @PostMapping("/manager-s/pageStore")
+    ResultMessage<Page<Specification>> getSpecification(Map<String, String> send);
     /**
      * 编辑规格
      */
@@ -49,4 +51,6 @@ public interface SpecificationManagerClient {
     ResultMessage<Specification> save(@RequestBody SpecificationVo parameters);
     @GetMapping("/manager-s/{ids}")
     ResultMessage<Object> delAllByIds(@PathVariable List<String> ids);
+
+
 }
