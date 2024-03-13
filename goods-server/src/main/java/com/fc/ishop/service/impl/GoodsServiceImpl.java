@@ -1,5 +1,8 @@
 package com.fc.ishop.service.impl;
 
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -12,6 +15,7 @@ import com.fc.ishop.dto.GoodsOperationDto;
 import com.fc.ishop.enums.GoodsAuthEnum;
 import com.fc.ishop.enums.GoodsStatusEnum;
 import com.fc.ishop.enums.ResultCode;
+import com.fc.ishop.enums.UserEnums;
 import com.fc.ishop.exception.ServiceException;
 import com.fc.ishop.mapper.GoodsMapper;
 import com.fc.ishop.security.AuthUser;
@@ -20,6 +24,7 @@ import com.fc.ishop.service.*;
 import com.fc.ishop.utils.BeanUtil;
 import com.fc.ishop.utils.PageUtil;
 import com.fc.ishop.dto.GoodsSearchParams;
+import com.fc.ishop.utils.StringUtils;
 import com.fc.ishop.vo.StoreVo;
 import com.fc.ishop.vo.goods.GoodsSkuVo;
 import com.fc.ishop.vo.goods.GoodsVo;
@@ -50,6 +55,28 @@ public class GoodsServiceImpl
     // 商品属性
     @Autowired
     private GoodsParamsService goodsParamsService;
+
+    @Override
+    public Integer todayUpperNum() {
+        LambdaQueryWrapper<Goods> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.eq(Goods::getMarketEnable, GoodsStatusEnum.UPPER.name());
+        queryWrapper.gt(Goods::getCreateTime, DateUtil.beginOfDay(new DateTime()));
+        return this.count(queryWrapper);
+    }
+
+    @Override
+    public int goodsNum(String goodsStatusEnum, String goodsAuthEnum) {
+        LambdaQueryWrapper<Goods> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Goods::getDeleteFlag, false);
+        if (!StringUtils.isEmpty(goodsStatusEnum)) {
+            queryWrapper.eq(Goods::getMarketEnable, goodsStatusEnum);
+        }
+        if (!StringUtils.isEmpty(goodsAuthEnum)) {
+            queryWrapper.eq(Goods::getIsAuth, goodsAuthEnum);
+        }
+        return this.count(queryWrapper);
+    }
+
     @Override
     public int getGoodsCountByCategory(String categoryId) {
         QueryWrapper<Goods> queryWrapper = Wrappers.query();
@@ -152,12 +179,6 @@ public class GoodsServiceImpl
         // 向goods加入图片
         this.setGoodsGalleryParam(goodsOperationDTO.getGoodsGalleryList().get(0), goods);
 
-        //商品添加卖家信息 （只存在管理员添加）
-        AuthUser currentUser = UserContext.getCurrentUser();
-        goods.setStoreId(currentUser.getId());
-        goods.setStoreName(currentUser.getNickName());
-        // 评论次数
-        goods.setCommentNum(0);
         // 购买次数
         goods.setBuyCount(0);
 

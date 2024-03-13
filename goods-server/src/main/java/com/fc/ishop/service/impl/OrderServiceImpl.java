@@ -3,6 +3,7 @@ package com.fc.ishop.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fc.ishop.dos.trade.Order;
@@ -17,6 +18,7 @@ import com.fc.ishop.mapper.OrderItemMapper;
 import com.fc.ishop.mapper.OrderMapper;
 import com.fc.ishop.service.OrderService;
 import com.fc.ishop.util.OperationalJudgment;
+import com.fc.ishop.utils.DateUtil;
 import com.fc.ishop.utils.PageUtil;
 import com.fc.ishop.utils.StringUtils;
 import com.fc.ishop.vo.order.OrderDetailVo;
@@ -25,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author florence
@@ -114,5 +117,15 @@ public class OrderServiceImpl
         }
 
         return this.count(queryWrapper);
+    }
+
+    @Override
+    public Map<String, Object> getOrderStatisticPrice() {
+        QueryWrapper<Order> query = Wrappers.query();
+        query.eq("order_status",OrderStatusEnum.PAID.name());
+        // 大于今天林晨
+        query.gt("create_time", DateUtil.startOfTodDay());
+        query.select("SUM(flow_price) AS price , COUNT(0) AS num");
+        return this.getMap(query);
     }
 }

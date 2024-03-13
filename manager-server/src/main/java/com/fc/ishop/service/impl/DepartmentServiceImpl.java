@@ -55,6 +55,7 @@ public class DepartmentServiceImpl
     @Override
     public void deleteByIds(List<String> ids) {
         QueryWrapper<AdminUser> queryWrapper = new QueryWrapper<>();
+        queryWrapper.in("department_id", ids);
         // 查询部门中是否存在管理员
         if (userService.count(queryWrapper) > 0) {
             throw new ServiceException(ResultCode.PERMISSION_DEPARTMENT_DELETE_ERROR);

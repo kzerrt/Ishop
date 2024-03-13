@@ -68,7 +68,7 @@ public class AuthorizationInterceptor extends ZuulFilter {
             }
         }
         // 设置认证通过请求头
-        //ctx.addZuulRequestHeader(SecurityEnum.AUTHENTICATED.getValue(), "true");
+        ctx.addZuulRequestHeader(SecurityEnum.AUTHENTICATED.getValue(), "true");
         //log.debug("{} 请求头设置成功 {}", SecurityEnum.AUTHENTICATED.getValue(), uri);
         return null;
     }

@@ -21,15 +21,15 @@ public interface OrderStatisticClient {
      * 获取订单数量
      * @return
      */
-    @GetMapping("/orderStatistic/orderNum")
-    Integer orderNum(String orderStatus);
+    @PostMapping("/orderStatistic/orderNum")
+    Integer orderNums(@RequestBody String orderStatus);
 
     /**
      * 订单统计概览
      * @param statisticsQueryParam
      * @return
      */
-    @PostMapping("/orderStatistic/orderNum")
+    @PostMapping("/orderStatistic/overview")
     ResultMessage<OrderOverviewVo> overview(@RequestBody StatisticsQueryParam statisticsQueryParam);
 
     /**

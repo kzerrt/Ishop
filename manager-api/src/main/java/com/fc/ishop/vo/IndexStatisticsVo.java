@@ -15,8 +15,6 @@ public class IndexStatisticsVo {
     private Integer goodsNum;
     //(value = "会员总数量")
     private Integer memberNum;
-    //(value = "店铺总数量")
-    private Integer storeNum;
 
     /**
      * 流量概括
@@ -34,7 +32,7 @@ public class IndexStatisticsVo {
      * 今日信息概括
      */
     //(value = "今日订单数")
-    private Long todayOrderNum;
+    private Integer todayOrderNum = 0;
     //(value = "今日下单金额")
     private Double todayOrderPrice;
     //(value = "今日新增会员数量")
@@ -48,5 +46,5 @@ public class IndexStatisticsVo {
 
     //当前在线人数
     //(value = "当前在线人数")
-    private Long currentNumberPeopleOnline;
+    private Long currentNumberPeopleOnline = 1L;
 }

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties("upload")
 public class UploadProperties  {
+    private String commonHost;
     private String staticAccessPath;
     private String basePath;
     private String upload;

@@ -13,6 +13,6 @@ import org.apache.ibatis.annotations.Select;
  */
 public interface MemberStatisticsDataMapper extends BaseMapper<MemberStatisticsData> {
 
-    @Select("SELECT  COUNT(0)  FROM i_member  ${ew.customSqlSegment}")
+    @Select("SELECT  COUNT(id)  FROM i_member  ${ew.customSqlSegment}")
     Integer customSqlQuery(@Param(Constants.WRAPPER) QueryWrapper queryWrapper);
 }

@@ -126,6 +126,11 @@ public class GoodsSkuServiceImpl
         } else {
             throw new ServiceException("规格必须要有一个！");
         }
+        this.updateStock(newSkuList);
+    }
+
+    private void updateStock(List<GoodsSku> newSkuList) {
+
     }
 
     private GoodsSkuVo getGoodsSkuVo(GoodsSku goodsSku) {
@@ -160,13 +165,10 @@ public class GoodsSkuServiceImpl
      * @param goods   商品信息
      */
     private List<GoodsSku> addGoodsSku(List<Map<String, Object>> skuList, Goods goods) {
-        List<GoodsSku> skus = new ArrayList<>();
+        List<GoodsSku> skus = new ArrayList<>(skuList.size());
         for (Map<String, Object> skuVO : skuList) {
             Map<String, Object> resultMap = this.add(skuVO, goods);
             GoodsSku goodsSku = (GoodsSku) resultMap.get("goodsSku");
-            if (goods.getSelfOperated() != null) {
-                goodsSku.setSelfOperated(goods.getSelfOperated());
-            }
             skus.add(goodsSku);
             //stringRedisTemplate.opsForValue().set(GoodsSkuService.getStockCacheKey(goodsSku.getId()), goodsSku.getQuantity().toString());
         }

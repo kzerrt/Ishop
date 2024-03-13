@@ -17,6 +17,18 @@ import java.util.List;
  */
 public interface GoodsService extends IService<Goods> {
     /**
+     * 获取今日上架商品
+     * @return
+     */
+    Integer todayUpperNum();
+    /**
+     * 统计商品数量
+     * @param goodsStatusEnum
+     * @param goodsAuthEnum
+     * @return
+     */
+    int goodsNum(String goodsStatusEnum, String goodsAuthEnum);
+    /**
      * 根据分类id查询商品数量
      * @param categoryId
      * @return

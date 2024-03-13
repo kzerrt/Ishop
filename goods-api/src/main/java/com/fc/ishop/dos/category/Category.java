@@ -39,8 +39,6 @@ public class Category extends BaseEntity {
     //@ApiModelProperty(value = "分类图标")
     private String image;
 
-    //@ApiModelProperty(value = "是否支持频道")
-    private Boolean supportChannel;
 
     public Category(String id, String createBy, Date createTime, String updateBy, Date updateTime, Boolean deleteFlag, String name, String parentId, Integer level, BigDecimal sortOrder,String image, Boolean supportChannel) {
         super(id, createBy, createTime, updateBy, updateTime, deleteFlag);
@@ -49,7 +47,6 @@ public class Category extends BaseEntity {
         this.level = level;
         this.sortOrder = sortOrder;
         this.image = image;
-        this.supportChannel = supportChannel;
     }
 
 }

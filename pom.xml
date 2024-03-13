@@ -33,6 +33,14 @@
         <maven.compiler.target>8</maven.compiler.target>
         <spring-cloud.version>Hoxton.SR3</spring-cloud.version>
     </properties>
+    <dependencies>
+        <!-- test-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
     <!-- 版本依赖-->
     <dependencyManagement>
         <dependencies>

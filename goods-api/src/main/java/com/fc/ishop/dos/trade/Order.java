@@ -32,12 +32,6 @@ public class Order extends BaseEntity {
     //@ApiModelProperty("交易编号 关联Trade")
     private String tradeSn;
 
-    //@ApiModelProperty(value = "店铺ID")
-    private String storeId;
-
-    //@ApiModelProperty(value = "店铺名称")
-    private String storeName;
-
     //@ApiModelProperty(value = "会员ID")
     private String memberId;
 
@@ -61,8 +55,6 @@ public class Order extends BaseEntity {
     //@ApiModelProperty(value = "货运状态")
     private String deliverStatus;
 
-    //@ApiModelProperty(value = "第三方付款流水号")
-    private String receivableNo;
 
     //@ApiModelProperty(value = "支付方式")
     private String paymentMethod;
@@ -77,17 +69,6 @@ public class Order extends BaseEntity {
     //@ApiModelProperty(value = "收件人手机")
     private String consigneeMobile;
 
-    /**
-     * @see DeliveryMethodEnum
-     */
-    //@ApiModelProperty(value = "配送方式")
-    private String deliveryMethod;
-
-    //@ApiModelProperty(value = "地址名称， '，'分割")
-    private String consigneeAddressPath;
-
-    //@ApiModelProperty(value = "地址id，'，'分割 ")
-    private String consigneeAddressIdPath;
 
     //@ApiModelProperty(value = "详细地址")
     private String consigneeDetail;
@@ -108,14 +89,6 @@ public class Order extends BaseEntity {
     //@ApiModelProperty(value = "修改价格")
     private Double updatePrice;
 
-    //@ApiModelProperty(value = "发货单号")
-    private String logisticsNo;
-
-    //@ApiModelProperty(value = "物流公司CODE")
-    private String logisticsCode;
-
-    //@ApiModelProperty(value = "物流公司名称")
-    private String logisticsName;
 
     //@ApiModelProperty(value = "订单商品总重量")
     private Double weight;
@@ -133,9 +106,6 @@ public class Order extends BaseEntity {
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date completeTime;
 
-    //@ApiModelProperty(value = "送货时间")
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date logisticsTime;
 
     //@ApiModelProperty(value = "支付方式返回的交易号")
     private String payOrderNo;
@@ -152,9 +122,6 @@ public class Order extends BaseEntity {
      */
     //@ApiModelProperty(value = "订单类型")
     private String orderType;
-
-    //@ApiModelProperty(value = "价格详情")
-    private String priceDetail;
 
 
     public Order() {
@@ -186,8 +153,6 @@ public class Order extends BaseEntity {
         this.setDeliverStatus(DeliverStatusEnum.UNDELIVERED.name());
         //如果有收货地址，才记录收货地址
         if (tradeDto.getMemberAddress() != null) {
-            this.setConsigneeAddressIdPath(tradeDto.getMemberAddress().getConsigneeAddressIdPath());
-            this.setConsigneeAddressPath(tradeDto.getMemberAddress().getConsigneeAddressPath());
             this.setConsigneeDetail(tradeDto.getMemberAddress().getDetail());
             this.setConsigneeMobile(tradeDto.getMemberAddress().getMobile());
             this.setConsigneeName(tradeDto.getMemberAddress().getName());
@@ -195,19 +160,6 @@ public class Order extends BaseEntity {
         this.setTradeSn(tradeDto.getSn());
         this.setRemark(cartVO.getRemark());
         this.setFreightPrice(tradeDto.getPriceDetailDto().getFreightPrice());
-    }
-
-    public PriceDetailDto getPriceDetailDto() {
-
-        try {
-            return JSONUtil.toBean(priceDetail, PriceDetailDto.class);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    public void setPriceDetailDTO(PriceDetailDto priceDetail) {
-        this.priceDetail = JSONUtil.toJsonStr(priceDetail);
     }
 
 }

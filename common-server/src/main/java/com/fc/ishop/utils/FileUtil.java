@@ -17,9 +17,10 @@ import java.io.IOException;
  */
 @Slf4j
 public class FileUtil {
-    private static UploadProperties upload;
+
+    private static  UploadProperties upload;
     /**
-     * 文件上传,返回不带文件名称的相对路径
+     * 文件上传,返回不带文件名称的绝对路径
      */
     public static String uploadFile(MultipartFile file, String fileName) throws IOException {
         return uploadFile(file, fileName, (String) null);
@@ -28,7 +29,7 @@ public class FileUtil {
 
     /**
      * @param paths 需要添加的文件路径，除基本路径外，可以额外添加专属路径
-     * @return
+     * @return  网络请求路径
      * @throws IOException
      */
     public static String uploadFile(MultipartFile file, String fileName, String... paths) throws IOException {
@@ -48,19 +49,19 @@ public class FileUtil {
         FileUtils.forceMkdirParent(uploadFile);
         // 剪切，将文件复制到路径中
         file.transferTo(uploadFile);
-        // 返回相对路径名
-        return relativePath;
+        // 返回路径名
+        return upload.getCommonHost() + relativePath;
     }
 
     /**
      * 删除文件
-     * @param relativeFile 文件相对路径
+     * @param filePath 网络文件路径
      * @throws IOException
      */
-    public static void deleteFile(String relativeFile) throws IOException {
-        if (StringUtils.isEmpty(relativeFile)) return;
+    public static void deleteFile(String filePath) throws IOException {
+        if (StringUtils.isEmpty(filePath)) return;
         // 对路径进行检查，并返回正确路径
-        relativeFile = StringUtils.checkPath(relativeFile);
+        String relativeFile = getRelativePath(StringUtils.checkPath(filePath));
         // todo 检查文件路径是否正确
         String absolutePath = upload.getBasePath() + relativeFile;
         File file = new File(absolutePath);
@@ -75,5 +76,12 @@ public class FileUtil {
     public static void setUpload(UploadProperties upload) {
         log.info("upload配置类加载......");
         FileUtil.upload = upload;
+    }
+    private static String getRelativePath(String absolutePath) {
+        if (absolutePath == null) return null;
+        if (absolutePath.matches("^(http|https)://.*$")) {
+            return absolutePath.split(upload.getCommonHost())[1];
+        }
+        return absolutePath;
     }
 }

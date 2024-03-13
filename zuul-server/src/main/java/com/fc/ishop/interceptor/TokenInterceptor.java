@@ -62,13 +62,13 @@ public class TokenInterceptor extends ZuulFilter {
         String accessToken = request.getHeader(SecurityEnum.HEADER_TOKEN.getValue());
         // 判断请求头是否存在
         if (StringUtils.isBlank(accessToken)) {
-            throw new TokenException(ResultCode.USER_NOT_LOGIN.message());
+            throw new ZuulException(ResultCode.USER_NOT_LOGIN.message(),500,"token错误");
         }
         // 用户认证通过
         String user = UserContext.getCurrentUserToStr(accessToken);
         if (user == null) {
             log.warn("token 获取不正确, 缓存获取不到信息");
-            throw new TokenException(ResultCode.USER_NOT_LOGIN.message());
+            throw new ZuulException(ResultCode.USER_NOT_LOGIN.message(),500,"token错误");
         }
         // 将用户信息以请求头方式发送
         ctx.addZuulRequestHeader(SecurityEnum.USER_CONTEXT.getValue(), user);// 设置请求头

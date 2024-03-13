@@ -55,10 +55,6 @@ public class Goods extends BaseEntity {
      */
     private String marketEnable;
     /**
-     * 详情
-     */
-    private String intro;
-    /**
      * 商品价格
      */
     @Max(value = 99999999, message = "价格不能超过99999999")
@@ -99,26 +95,6 @@ public class Goods extends BaseEntity {
      */
     private String storeCategoryPath;
     /**
-     * 评论数量
-     */
-    private Integer commentNum;
-    /**
-     * 卖家id
-     */
-    private String storeId;
-    /**
-     * 卖家名字
-     */
-    private String storeName;
-    /**
-     * 运费模板id
-     */
-    private String templateId;
-    /**
-     * 谁承担运费 BUYER：买家承担，STORE：卖家承担
-     */
-    private String freightPayer;
-    /**
      * 审核状态
      *
      * @see GoodsStatusEnum
@@ -132,25 +108,7 @@ public class Goods extends BaseEntity {
      * 下架原因
      */
     private String underMessage;
-    /**
-     * 是否自营
-     */
-    private Boolean selfOperated;
-    /**
-     * 商品移动端详情
-     */
-    private String mobileIntro;
-    /**
-     * 商品视频
-     */
-    private String goodsVideo;
 
-
-    //@ApiModelProperty(value = "是否为推荐商品", required = true)
-    private boolean recommend;
-
-    //@ApiModelProperty(value = "销售模式", required = true)
-    private String salesModel;
 
     public Goods() {
     }
@@ -158,14 +116,11 @@ public class Goods extends BaseEntity {
     public Goods(GoodsOperationDto goodsOperationDTO) {
         this.goodsName = goodsOperationDTO.getGoodsName();
         this.categoryPath = goodsOperationDTO.getCategoryPath();
-        this.storeCategoryPath = goodsOperationDTO.getStoreCategoryPath();
-        this.brandId = goodsOperationDTO.getBrandId();
         this.sn = goodsOperationDTO.getSn();
         this.price = goodsOperationDTO.getPrice();
         this.weight = goodsOperationDTO.getWeight();
         this.sellingPoint = goodsOperationDTO.getSellingPoint();
         this.goodsUnit = goodsOperationDTO.getGoodsUnit();
-        this.intro = goodsOperationDTO.getIntro();
         this.cost = goodsOperationDTO.getCost();
 
     }

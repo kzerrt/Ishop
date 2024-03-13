@@ -14,7 +14,7 @@ import java.util.Date;
  * @date 2023/12/24
  */
 @Data
-@TableName("li_member_statistics_data")
+@TableName("i_member_statistics_data")
 public class MemberStatisticsData {
     @TableId
     @TableField

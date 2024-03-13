@@ -32,29 +32,8 @@ public class GoodsStatisticsController implements GoodsStatisticClient {
     private GoodsService goodsService;
     @Autowired
     private GoodsStatisticsDataService goodsStatisticsData;
-    @Override
-    public Integer goodsNum(String goodsStatusEnum, String goodsAuthEnum) {
-        LambdaQueryWrapper<Goods> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(Goods::getDeleteFlag, false);
-        if (!StringUtils.isEmpty(goodsStatusEnum)) {
-            queryWrapper.eq(Goods::getMarketEnable, goodsStatusEnum);
-        }
-        if (!StringUtils.isEmpty(goodsAuthEnum)) {
-            queryWrapper.eq(Goods::getIsAuth, goodsAuthEnum);
-        }
-        if (StringUtils.equals(UserContext.getCurrentUser().getRole().name(), UserEnums.STORE.name())) {
-            queryWrapper.eq(Goods::getStoreId, UserContext.getCurrentUser().getStoreId());
-        }
-        return goodsService.count(queryWrapper);
-    }
 
-    @Override
-    public Integer todayUpperNum() {
-        LambdaQueryWrapper<Goods> queryWrapper = Wrappers.lambdaQuery();
-        queryWrapper.eq(Goods::getMarketEnable, GoodsStatusEnum.UPPER.name());
-        queryWrapper.gt(Goods::getCreateTime, DateUtil.beginOfDay(new DateTime()));
-        return goodsService.count(queryWrapper);
-    }
+
 
     @Override
     public ResultMessage<List<GoodsStatisticsDataVo>> getByPage(GoodsStatisticsQueryParam goodsStatisticsQueryParam) {

@@ -17,19 +17,6 @@ import java.util.List;
  */
 @FeignClient(value = "goods-server", contextId = "goodsStatisticClient")
 public interface GoodsStatisticClient {
-    /**
-     * 获取订单数量
-     */
-    @GetMapping("/goodsStatistic/goodsNum")
-    Integer goodsNum(@RequestParam("goodsStatusEnum") String goodsStatusEnum,
-                     @RequestParam("goodsAuthEnum") String goodsAuthEnum);
-
-    /**
-     * 今日新增商品数
-     * @return
-     */
-    @GetMapping("/goodsStatistic/todayUpper")
-    Integer todayUpperNum();
 
     /**
      * 获取统计列表,排行前一百的数据

@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class TokenUtil {
 
-    private long tokenExpireTime = 20;
+    private long tokenExpireTime = 60;
     //private RedisCache cache;
     @Autowired
     private Cache cache;
@@ -103,7 +103,7 @@ public class TokenUtil {
         String refreshToken = UUID.nameUUIDFromBytes(oldRefreshToken.getBytes(StandardCharsets.UTF_8)).toString();
         // 将新token放入
         cache.put(CachePrefix.ACCESS_TOKEN.getPrefix(userEnums) + refreshToken,
-                new Gson().toJson(currentUser), 2 * tokenExpireTime, TimeUnit.MINUTES);
+                new Gson().toJson(currentUser), tokenExpireTime, TimeUnit.MINUTES);
         token.setAccessToken(refreshToken);
         token.setRefreshToken(refreshToken);
         // 移除旧token

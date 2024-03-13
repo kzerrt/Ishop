@@ -74,20 +74,6 @@ public class OrderPriceServiceImpl implements OrderPriceService {
         if (order.getPayStatus().equals(PayStatusEnum.PAID.name())) {
             throw new ServiceException(ResultCode.ORDER_UPDATE_PRICE_ERROR);
         }
-        //获取订单价格信息
-        PriceDetailDto orderPriceDetailDTO = order.getPriceDetailDto();
-
-        //如果未修改过金额则记录订单原始价格
-        if (orderPriceDetailDTO.getOriginalPrice() == null) {
-            orderPriceDetailDTO.setOriginalPrice(order.getFlowPrice());
-        }
-        //修改订单价格
-        order.setFlowPrice(orderPrice);
-        //订单修改金额=使用订单原始金额-修改后金额
-        orderPriceDetailDTO.setUpdatePrice(CurrencyUtil.sub(orderPriceDetailDTO.getOriginalPrice(), orderPrice));
-        orderPriceDetailDTO.setFlowPrice(orderPrice);
-        //修改订单
-        order.setPriceDetail(JSONUtil.toJsonStr(orderPriceDetailDTO));
         orderService.updateById(order);
         return order;
     }
@@ -107,7 +93,7 @@ public class OrderPriceServiceImpl implements OrderPriceService {
         if (orderItems == null || orderItems.size() == 0) return;
         for (OrderItem orderItem : orderItems) {
             //获取订单货物价格信息
-            PriceDetailDto priceDetailDTO = orderItem.getPriceDetailDto();
+            /*PriceDetailDto priceDetailDTO = orderItem.getPriceDetailDto();
 
             //如果未修改过金额则记录订单原始价格
             if (priceDetailDTO.getOriginalPrice() == null) {
@@ -131,7 +117,7 @@ public class OrderPriceServiceImpl implements OrderPriceService {
             //修改订单货物金额
             orderItem.setFlowPrice(flowPrice);
             orderItem.setPriceDetail(JSONUtil.toJsonStr(priceDetailDTO));
-            orderItemService.update(orderItem, new LambdaUpdateWrapper<OrderItem>().eq(OrderItem::getId, orderItem.getId()));
+            orderItemService.update(orderItem, new LambdaUpdateWrapper<OrderItem>().eq(OrderItem::getId, orderItem.getId()));*/
         }
     }
 

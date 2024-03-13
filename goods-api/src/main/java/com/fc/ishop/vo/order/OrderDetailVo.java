@@ -97,13 +97,6 @@ public class OrderDetailVo implements Serializable {
         }
     }
 
-    public String getDeliveryMethodValue() {
-        try {
-            return DeliveryMethodEnum.valueOf(order.getDeliveryMethod()).getDescription();
-        } catch (Exception e) {
-            return "";
-        }
-    }
 
     public OrderDetailVo() {
     }

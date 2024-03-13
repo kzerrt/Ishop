@@ -52,9 +52,6 @@ public class Member extends BaseEntity {
     //@ApiModelProperty(value = "手机号码", required = true)
     private String mobile;
 
-    @Min(message = "必须为数字", value = 0)
-    //@ApiModelProperty(value = "积分数量")
-    private Long point;
 
     //@ApiModelProperty(value = "会员头像")
     private String face;
@@ -79,7 +76,6 @@ public class Member extends BaseEntity {
         this.disabled = true;
         this.haveStore = false;
         this.sex = 0;
-        this.point = 0L;
         this.lastLoginDate = new Date();
     }
 
@@ -92,7 +88,6 @@ public class Member extends BaseEntity {
         this.haveStore = false;
         this.face = face;
         this.sex = 0;
-        this.point = 0L;
         this.lastLoginDate = new Date();
     }
 
@@ -105,7 +100,6 @@ public class Member extends BaseEntity {
         this.haveStore = false;
         this.face = face;
         this.sex = sex;
-        this.point = 0L;
         this.lastLoginDate = new Date();
     }
 }

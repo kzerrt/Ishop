@@ -82,7 +82,11 @@ public class GoodsManagerController {
     public ResultMessage<GoodsOperationDto> update(@RequestBody GoodsOperationDto goodsOperationDTO, @PathVariable String goodsId) {
         return goodsManagerClient.update(goodsOperationDTO, goodsId);
     }
-    @PutMapping(value = "/save", consumes = "application/json", produces = "application/json")
+
+    /**
+     * {"weight":"2","goodsGalleryFiles":[{"status":"finished","name":"download20240202142555.png","size":99628,"percentage":100,"uid":1709438100440,"showProgress":false,"response":{"success":true,"message":"success","code":200,"timestamp":1709438100419,"result":"/upload/image/MANAGER/1337306110277476352/1709438100355.png"},"url":"/upload/image/MANAGER/1337306110277476352/1709438100355.png"}],"storeCategoryPath":"","brandId":0,"goodsUnit":"个","categoryPath":"1348576427264204941,1348576427264204942,1348576427264204943,1348576427264204946,1348576427264204942,1348576427264204946,1348576427264204942,1348576427264204943","sellingPoint":"就是好","updateSku":true,"regeneratorSkuFlag":true,"categoryId":"1348576427264204943","categoryName":"手机","goodsName":"小米手机","sn":"3332221","price":"1999","cost":"1699","skuList":[{"颜色":"红色","images":[{"status":"finished","name":"download20240202142555.png","size":99628,"percentage":100,"uid":1709438100440,"showProgress":false,"response":{"success":true,"message":"success","code":200,"timestamp":1709438100419,"result":"/upload/image/MANAGER/1337306110277476352/1709438100355.png"},"url":"/upload/image/MANAGER/1337306110277476352/1709438100355.png"}],"sn":"3332223","weight":"2","quantity":"9999","cost":"1699","price":"1999"}],"goodsGalleryList":["/upload/image/MANAGER/1337306110277476352/1709438100355.png"]}
+     */
+    @PostMapping(value = "/save", consumes = "application/json", produces = "application/json")
     public ResultMessage<GoodsOperationDto> save(@RequestBody GoodsOperationDto goodsOperationDTO) {
         return goodsManagerClient.save(goodsOperationDTO);
     }

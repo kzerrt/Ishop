@@ -11,6 +11,7 @@ import java.util.List;
  * @author florence
  * @date 2023/12/18
  */
+@Deprecated
 @Data
 public class PriceDetailDto implements Serializable {
 

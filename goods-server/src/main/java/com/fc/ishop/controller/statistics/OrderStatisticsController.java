@@ -24,7 +24,7 @@ public class OrderStatisticsController implements OrderStatisticClient {
     @Autowired
     private OrderStatisticsDataService orderStatisticsDataService;
     @Override
-    public Integer orderNum(String orderStatus) {
+    public Integer orderNums(String orderStatus) {
         return orderService.orderNum(orderStatus);
     }
 

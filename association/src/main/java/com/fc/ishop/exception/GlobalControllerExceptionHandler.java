@@ -58,6 +58,7 @@ public class GlobalControllerExceptionHandler {
         return ResultUtil.error(ResultCode.ERROR.code(), errorMsg);
     }
 
+
     @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ResultMessage<Object> runtimeExceptionHandler(HttpServletRequest request, final Exception e, HttpServletResponse response) {

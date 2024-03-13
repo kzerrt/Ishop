@@ -32,6 +32,7 @@ spring:
 server:
   port: 8890
 upload:
+  commonHost: http://127.0.0.1:9000/common
   static-access-path: /upload/image/**
   base-path: D:/coding/img
   upload: /upload

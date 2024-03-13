@@ -30,6 +30,8 @@ public class AdminUserDto extends BaseEntity {
     //@ApiModelProperty(value = "手机")
     private String mobile;
 
+    private String avatar;
+
     //@ApiModelProperty(value = "邮件")
     private String email;
 

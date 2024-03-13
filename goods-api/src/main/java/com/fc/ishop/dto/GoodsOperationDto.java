@@ -29,15 +29,6 @@ public class GoodsOperationDto implements Serializable {
     //@ApiModelProperty(value = "分类path")
     private String categoryPath;
 
-    //@ApiModelProperty(value = "店铺分类id", required = true)
-    @NotNull(message = "店铺分类不能为空")
-    @Min(value = 0, message = "店铺分类值不正确")
-    private String storeCategoryPath;
-
-    //@ApiModelProperty(value = "品牌id")
-    @Min(value = 0, message = "品牌值不正确")
-    private String brandId;
-
     //@ApiModelProperty(value = "商品名称", required = true)
     @NotEmpty(message = "商品名称不能为空")
     private String goodsName;
@@ -61,9 +52,6 @@ public class GoodsOperationDto implements Serializable {
     @Min(value = 0, message = "重量不能为负数")
     @Max(value = 99999999, message = "重量不能超过99999999")
     private Double weight;
-
-    //@ApiModelProperty(value = "详情")
-    private String intro;
 
 
     //@ApiModelProperty(value = "商品参数")

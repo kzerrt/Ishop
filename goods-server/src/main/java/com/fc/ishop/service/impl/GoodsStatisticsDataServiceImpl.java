@@ -29,7 +29,7 @@ public class GoodsStatisticsDataServiceImpl
         QueryWrapper queryWrapper = getQueryWrapper(goodsStatisticsQueryParam);
         //根据商品分组
         queryWrapper.groupBy("goods_id");
-        //queryWrapper.groupBy("goods_name");
+        queryWrapper.groupBy("goods_name");
 
         queryWrapper.eq(!StringUtils.isEmpty(goodsStatisticsQueryParam.getStoreId()), "store_id", goodsStatisticsQueryParam.getStoreId());
         //查询前一百条记录

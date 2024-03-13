@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @author florence
  * @date 2023/12/24
  */
+@Deprecated
 @FeignClient(value = "goods-server", contextId = "storeStatisticClient")
 public interface StoreStatisticClient {
     /**

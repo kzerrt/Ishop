@@ -9,6 +9,8 @@ import com.fc.ishop.dto.OrderSearchParams;
 import com.fc.ishop.vo.order.OrderDetailVo;
 import com.fc.ishop.vo.order.OrderSimpleVo;
 
+import java.util.Map;
+
 /**
  * @author florence
  * @date 2023/12/18
@@ -52,5 +54,11 @@ public interface OrderService extends IService<Order> {
      * @return
      */
     Integer orderNum(String orderStatus);
+
+    /**
+     * 获取今日交易额
+     * @return
+     */
+    Map<String, Object> getOrderStatisticPrice();
 
 }
