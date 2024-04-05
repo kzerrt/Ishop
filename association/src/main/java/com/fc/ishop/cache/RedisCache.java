@@ -5,10 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.data.redis.connection.RedisConnection;
-import org.springframework.data.redis.core.Cursor;
-import org.springframework.data.redis.core.HyperLogLogOperations;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ScanOptions;
+import org.springframework.data.redis.core.*;
+import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.data.redis.support.atomic.RedisAtomicLong;
 import org.springframework.stereotype.Component;
 
@@ -18,11 +17,11 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 @Component
-public class RedisCache implements Cache, ApplicationContextAware {
+public class RedisCache implements Cache<String>, ApplicationContextAware {
 
     private static RedisCache redisCache;
     @Autowired
-    private RedisTemplate<Object, Object> redisTemplate;
+    private StringRedisTemplate redisTemplate;
 
     public RedisCache() {
 
@@ -31,7 +30,7 @@ public class RedisCache implements Cache, ApplicationContextAware {
         return redisCache;
     }
     @Override
-    public Object get(Object key) {
+    public String get(Object key) {
 
         return redisTemplate.opsForValue().get(key);
     }
@@ -45,56 +44,55 @@ public class RedisCache implements Cache, ApplicationContextAware {
         }
     }
 
-    @Override
+    /*@Override
     public List multiGet(Collection keys) {
         return redisTemplate.opsForValue().multiGet(keys);
 
-    }
+    }*/
 
 
-    @Override
+    /*@Override
     public void multiSet(Map map) {
         redisTemplate.opsForValue().multiSet(map);
-    }
+    }*/
 
-    @Override
+    /*@Override
     public void multiDel(Collection keys) {
         redisTemplate.delete(keys);
+    }*/
+
+    @Override
+    public void put(Object key, String value) {
+        redisTemplate.opsForValue().set((String) key, value);
     }
 
     @Override
-    public void put(Object key, Object value) {
-        redisTemplate.opsForValue().set(key, value);
+    public void put(Object key, String value, Long exp) {
+        put((String)key, value, exp, TimeUnit.SECONDS);
     }
 
     @Override
-    public void put(Object key, Object value, Long exp) {
-        put(key, value, exp, TimeUnit.SECONDS);
-    }
-
-    @Override
-    public void put(Object key, Object value, Long exp, TimeUnit timeUnit) {
+    public void put(String key, String value, Long exp, TimeUnit timeUnit) {
         redisTemplate.opsForValue().set(key, value, exp, timeUnit);
     }
 
     @Override
     public void remove(Object key) {
 
-        redisTemplate.delete(key);
+        redisTemplate.delete((String) key);
     }
 
     /**
      * 删除
      *
-     * @param key
      */
-    @Override
+    /*@Override
     public void vagueDel(Object key) {
         Set<Object> keys = redisTemplate.keys(key + "*");
         redisTemplate.delete(keys);
-    }
+    }*/
 
-    @Override
+    /*@Override
     public void clear() {
 
         Set keys = redisTemplate.keys("*");
@@ -119,7 +117,7 @@ public class RedisCache implements Cache, ApplicationContextAware {
     @Override
     public Map<Object, Object> getHash(Object key) {
         return this.redisTemplate.opsForHash().entries(key);
-    }
+    }*/
 
     @Override
     public boolean hasKey(Object key) {
@@ -168,23 +166,23 @@ public class RedisCache implements Cache, ApplicationContextAware {
     }
 
 
-    @Override
+    /*@Override
     public Long cumulative(Object key, Object value) {
         HyperLogLogOperations<Object, Object> operations = redisTemplate.opsForHyperLogLog();
         // add 方法对应 PFADD 命令
         return operations.add(key, value);
 
-    }
+    }*/
 
-    @Override
+    /*@Override
     public Long counter(Object key) {
         HyperLogLogOperations<Object, Object> operations = redisTemplate.opsForHyperLogLog();
 
         // add 方法对应 PFADD 命令
         return operations.size(key);
-    }
+    }*/
 
-    @Override
+    /*@Override
     public List multiCounter(Collection keys) {
         if (keys == null) {
             return new ArrayList();
@@ -194,16 +192,16 @@ public class RedisCache implements Cache, ApplicationContextAware {
             result.add(counter(key));
         }
         return result;
-    }
+    }*/
 
-    @Override
+    /*@Override
     public Long mergeCounter(Object... key) {
         HyperLogLogOperations<Object, Object> operations = redisTemplate.opsForHyperLogLog();
         // 计数器合并累加
         return operations.union(key[0], key);
-    }
+    }*/
 
-    @Override
+    /*@Override
     public Long incr(String key, long liveTime) {
         RedisAtomicLong entityIdCounter = new RedisAtomicLong(key, redisTemplate.getConnectionFactory());
         Long increment = entityIdCounter.getAndIncrement();
@@ -213,7 +211,7 @@ public class RedisCache implements Cache, ApplicationContextAware {
         }
 
         return increment;
-    }
+    }*/
 
     /**
      * 使用Sorted Set记录keyword
@@ -222,12 +220,12 @@ public class RedisCache implements Cache, ApplicationContextAware {
      * @param sortedSetName sortedSetName的Sorted Set不用预先创建，不存在会自动创建，存在则向里添加数据
      * @param keyword       关键词
      */
-    @Override
+    /*@Override
     public void incrementScore(String sortedSetName, String keyword) {
         // x 的含义请见本方法的注释
         double x = 1.0;
         this.redisTemplate.opsForZSet().incrementScore(sortedSetName, keyword, x);
-    }
+    }*/
 
 
     @Override

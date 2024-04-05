@@ -8,6 +8,7 @@ import com.fc.ishop.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
@@ -23,6 +24,7 @@ public class RocketMQTimerTrigger implements TimeTrigger{
     @Autowired
     private RocketMQTemplate rocketMQTemplate;
     @Autowired
+    @Qualifier("redisObj")
     private Cache<Integer> cache;
     @Autowired
     private PromotionDelayQueue promotionDelayQueue;
@@ -49,7 +51,7 @@ public class RocketMQTimerTrigger implements TimeTrigger{
         }
         // 执行任务key
         String generateKey = TimeTriggerUtil.generateKey(timeTriggerMsg.getTriggerExecutor(), timeTriggerMsg.getTriggerTime(), uniqueKey);
-        this.cache.put(generateKey, 1, 3600 * 5L);
+        this.cache.put(generateKey, 1);
         // 设置延时任务
         if (promotionDelayQueue.addJobId(JSONUtil.toJsonStr(timeTriggerMsg), delayTime)) {
             log.info("add Redis key {}", generateKey);

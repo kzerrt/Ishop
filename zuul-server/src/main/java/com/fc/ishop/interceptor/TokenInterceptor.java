@@ -1,10 +1,7 @@
 package com.fc.ishop.interceptor;
 
-import com.fc.ishop.cache.Cache;
 import com.fc.ishop.constant.ReqParam;
 import com.fc.ishop.enums.ResultCode;
-import com.fc.ishop.enums.UserEnums;
-import com.fc.ishop.exception.TokenException;
 import com.fc.ishop.prop.IgnoreProperties;
 import com.fc.ishop.security.AuthUser;
 import com.fc.ishop.security.context.UserContext;

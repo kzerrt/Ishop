@@ -30,14 +30,14 @@ public interface Cache<T> {
      * @param keys 要查询的key集合
      * @return
      */
-    List multiGet(Collection keys);
+    //List multiGet(Collection keys);
 
     /**
      * 批量set
      *
      * @param map
      */
-    void multiSet(Map map);
+    //void multiSet(Map map);
 
 
     /**
@@ -45,7 +45,7 @@ public interface Cache<T> {
      *
      * @param keys 要删除的key集合
      */
-    void multiDel(Collection keys);
+    //void multiDel(Collection keys);
 
     /**
      * Add an item to the cache, nontransactionally, with
@@ -73,7 +73,7 @@ public interface Cache<T> {
      * @param exp
      * @param timeUnit 写入单位
      */
-    void put(Object key, T value, Long exp, TimeUnit timeUnit);
+    void put(String key, T value, Long exp, TimeUnit timeUnit);
 
     /**
      * 删除
@@ -87,12 +87,12 @@ public interface Cache<T> {
      *
      * @param key
      */
-    void vagueDel(Object key);
+    //void vagueDel(Object key);
 
     /**
      * Clear the cache
      */
-    void clear();
+    //void clear();
 
 
     /**
@@ -102,7 +102,7 @@ public interface Cache<T> {
      * @param hashKey   缓存中hashKey
      * @param hashValue hash值
      */
-    void putHash(Object key, Object hashKey, Object hashValue);
+    //void putHash(Object key, Object hashKey, Object hashValue);
 
     /**
      * 玩缓存中写入内容
@@ -110,7 +110,7 @@ public interface Cache<T> {
      * @param key
      * @param map
      */
-    void putAllHash(Object key, Map map);
+    //void putAllHash(Object key, Map map);
 
     /**
      * 读取缓存值
@@ -119,7 +119,7 @@ public interface Cache<T> {
      * @param hashKey
      * @return
      */
-    T getHash(Object key, Object hashKey);
+    //T getHash(Object key, Object hashKey);
 
     /**
      * 读取缓存值
@@ -127,7 +127,7 @@ public interface Cache<T> {
      * @param key
      * @return
      */
-    Map<Object, Object> getHash(Object key);
+    //Map<Object, Object> getHash(Object key);
 
     /**
      * 是否包含
@@ -157,7 +157,7 @@ public interface Cache<T> {
      * @param key
      * @return
      */
-    Long cumulative(Object key, Object value);
+    //Long cumulative(Object key, Object value);
 
     /**
      * 计数器结果
@@ -168,7 +168,7 @@ public interface Cache<T> {
      * @param key
      * @return
      */
-    Long counter(Object key);
+    //Long counter(Object key);
 
     /**
      * 批量计数
@@ -176,7 +176,7 @@ public interface Cache<T> {
      * @param keys 要查询的key集合
      * @return
      */
-    List multiCounter(Collection keys);
+    //List multiCounter(Collection keys);
 
     /**
      * 计数器结果
@@ -187,7 +187,7 @@ public interface Cache<T> {
      * @param key
      * @return
      */
-    Long mergeCounter(Object... key);
+    //Long mergeCounter(Object... key);
     //---------------------------------------------------用于特殊场景，redis去重统计-----------------------------------------
 
     //-----------------------------------------------redis计数---------------------------------------------
@@ -200,7 +200,7 @@ public interface Cache<T> {
      * @param liveTime 单位秒后失效
      * @return
      */
-    Long incr(String key, long liveTime);
+    //Long incr(String key, long liveTime);
     //-----------------------------------------------redis计数---------------------------------------------
 
     /**
@@ -210,7 +210,7 @@ public interface Cache<T> {
      * @param sortedSetName sortedSetName的Sorted Set不用预先创建，不存在会自动创建，存在则向里添加数据
      * @param keyword       关键词
      */
-    void incrementScore(String sortedSetName, String keyword);
+    //void incrementScore(String sortedSetName, String keyword);
 
     /**
      * zrevrange命令, 查询Sorted Set中指定范围的值

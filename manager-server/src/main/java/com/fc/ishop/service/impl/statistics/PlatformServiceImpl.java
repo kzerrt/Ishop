@@ -5,6 +5,7 @@ import com.fc.ishop.cache.CachePrefix;
 import com.fc.ishop.service.statistic.PlatformService;
 import com.fc.ishop.vo.OnlineMemberVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.List;
 @Service("platformService")
 public class PlatformServiceImpl implements PlatformService {
     @Autowired
+    @Qualifier("redisObj")
     private Cache cache;
     @Override
     public Long online() {

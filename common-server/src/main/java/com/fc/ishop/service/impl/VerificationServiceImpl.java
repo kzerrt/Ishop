@@ -4,6 +4,7 @@ import com.fc.ishop.cache.Cache;
 import com.fc.ishop.cache.CachePrefix;
 import com.fc.ishop.service.VerificationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class VerificationServiceImpl implements VerificationService {
     @Autowired
+    @Qualifier("redisCache")
     private Cache cache;
     @Override
     public boolean check(String uuid, String type) {

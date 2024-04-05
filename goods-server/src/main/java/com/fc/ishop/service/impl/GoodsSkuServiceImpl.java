@@ -13,7 +13,6 @@ import com.fc.ishop.dos.goods.Goods;
 import com.fc.ishop.dos.goods.GoodsSku;
 import com.fc.ishop.enums.GoodsAuthEnum;
 import com.fc.ishop.enums.GoodsStatusEnum;
-import com.fc.ishop.exception.ServiceException;
 import com.fc.ishop.mapper.GoodsSkuMapper;
 import com.fc.ishop.service.GoodsSkuService;
 import com.fc.ishop.service.SpecValuesService;
@@ -24,6 +23,7 @@ import com.fc.ishop.vo.SpecValueVo;
 import com.fc.ishop.vo.SpecificationVo;
 import com.fc.ishop.vo.goods.GoodsSkuVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +41,7 @@ import java.util.stream.Collectors;
 public class GoodsSkuServiceImpl
         extends ServiceImpl<GoodsSkuMapper, GoodsSku> implements GoodsSkuService {
     @Autowired
+    @Qualifier("redisObj")
     private Cache<GoodsSku> cache;
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
@@ -120,13 +121,13 @@ public class GoodsSkuServiceImpl
     public void add(List<Map<String, Object>> skuList, Goods goods) {
         List<GoodsSku> newSkuList;
         // 如果有规格
-        if (skuList != null && !skuList.isEmpty()) {
+        /*if (skuList != null && !skuList.isEmpty()) {
             // 添加商品sku
             newSkuList = this.addGoodsSku(skuList, goods);
         } else {
             throw new ServiceException("规格必须要有一个！");
         }
-        this.updateStock(newSkuList);
+        this.updateStock(newSkuList);*/
     }
 
     private void updateStock(List<GoodsSku> newSkuList) {

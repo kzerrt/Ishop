@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Slf4j
 public class AuthorizationInterceptor extends ZuulFilter {
-    private final String member = "/member/**";
+    private final String member = "/manager/buyer/**";
     private final String store = "/store/**";
     @Override
     public String filterType() {

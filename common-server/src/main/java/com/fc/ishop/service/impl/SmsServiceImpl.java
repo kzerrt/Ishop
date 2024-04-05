@@ -6,6 +6,7 @@ import com.fc.ishop.service.SmsService;
 import com.fc.ishop.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SmsServiceImpl implements SmsService {
     @Autowired
+    @Qualifier("redisCache")
     private Cache<String> cache;
     @Override
     public boolean sendSmsCode(String mobile, String type, String uuid) {

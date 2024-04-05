@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 /**
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Component;
 @RocketMQMessageListener(topic = "${ishop.rocketmq.promotion-topic}", consumerGroup = "${ishop.rocketmq.promotion-group}")
 public class TimeTriggerConsumer implements RocketMQListener<TimeTriggerMsg> {
     @Autowired
+    @Qualifier("redisObj")
     private Cache<Integer> cache;
     @Autowired
     private PromotionTimeTriggerExecutor executor;

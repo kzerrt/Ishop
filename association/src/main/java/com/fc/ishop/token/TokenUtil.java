@@ -10,6 +10,7 @@ import com.fc.ishop.security.AuthUser;
 import com.fc.ishop.security.context.UserContext;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -28,7 +29,8 @@ public class TokenUtil {
     private long tokenExpireTime = 60;
     //private RedisCache cache;
     @Autowired
-    private Cache cache;
+    @Qualifier("redisCache")
+    private Cache<String> cache;
 
     /*@PostConstruct
     private void getCache() {
@@ -64,7 +66,7 @@ public class TokenUtil {
         Token token = new Token();
         //访问token
         String accessToken = UUID.randomUUID().toString();
-        cache.put(CachePrefix.ACCESS_TOKEN.getPrefix(userEnums) + accessToken, 1,
+        cache.put(CachePrefix.ACCESS_TOKEN.getPrefix(userEnums) + accessToken, "1",
                 tokenExpireTime, TimeUnit.MINUTES);
         token.setAccessToken(accessToken);
         token.setRefreshToken(accessToken);

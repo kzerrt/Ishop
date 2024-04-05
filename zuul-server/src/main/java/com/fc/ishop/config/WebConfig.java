@@ -1,9 +1,7 @@
 package com.fc.ishop.config;
 
-import com.fc.ishop.cache.Cache;
 import com.fc.ishop.interceptor.*;
 import com.fc.ishop.prop.IgnoreProperties;
-import com.fc.ishop.security.AuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

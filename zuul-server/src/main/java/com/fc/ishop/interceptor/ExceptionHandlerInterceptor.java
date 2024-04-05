@@ -43,8 +43,8 @@ public class ExceptionHandlerInterceptor extends ZuulFilter {
             currentContext.setResponseStatusCode(404);
         }
         HttpServletRequest request = currentContext.getRequest();
-        log.debug("请求出错 method: {}, uri:{} 请求错误消息 {}",
-                request.getMethod(), request.getRequestURI(), throwable.getCause());
+        log.error("请求出错 method: {}, uri:{} 请求错误消息 ",
+                request.getMethod(), request.getRequestURI(), throwable);
         //throwable.printStackTrace();
         // 可选：设置响应内容为一条错误消息
         currentContext.setResponseBody(throwable.getMessage());

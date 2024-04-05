@@ -54,6 +54,9 @@ public class UserContext {
         return new Gson().fromJson(user, AuthUser.class);
     }
     public static String getCurrentUserToStr(String accessToken) {
+        if (accessToken == null) {
+            throw new ServiceException("用户请求token为空");
+        }
         RedisCache cache = RedisCache.getCache();
         // 通过正则匹配key
         List<String> keys = cache.keys("*" + accessToken);
@@ -62,10 +65,11 @@ public class UserContext {
         }
         // 不管获取到多少用户，只取第一个�� t ;{ACCESS_TOKEN_MANAGER}_3c79655b-df85-3eb2-b61c-38b6a3ec7a0d
         //String user = keys.get(0);
-        int indexOf = keys.get(0).indexOf(";");
-        String user = cache.getString(keys.get(0).substring(indexOf + 1));
+        int indexOf = keys.get(0).indexOf("{");
+        String user = cache.getString(keys.get(0));
         if (user == null) {
-            log.debug("token:{}, 未获取到用户 key {}", accessToken, keys.get(0));
+            log.debug("token:{}, 未获取到用户 key {},\n 截取字符串为 {}",
+                    accessToken, keys.get(0), keys.get(0).substring(indexOf));
         }
         return user;
     }

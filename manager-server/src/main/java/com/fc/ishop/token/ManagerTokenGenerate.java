@@ -3,12 +3,15 @@ package com.fc.ishop.token;
 import com.fc.ishop.cache.Cache;
 import com.fc.ishop.cache.CachePrefix;
 import com.fc.ishop.dos.AdminUser;
+import com.fc.ishop.enums.ResultCode;
 import com.fc.ishop.enums.UserEnums;
+import com.fc.ishop.exception.ServiceException;
 import com.fc.ishop.security.AuthUser;
 import com.fc.ishop.service.RoleMenuService;
 import com.fc.ishop.service.UserService;
 import com.fc.ishop.token.generate.AbstractTokenGenerate;
 import com.fc.ishop.vo.UserMenuVo;
+import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,7 +31,7 @@ public class ManagerTokenGenerate extends AbstractTokenGenerate {
     @Autowired
     private RoleMenuService roleMenuService;
     @Autowired
-    private Cache<Object> cache;
+    private Cache<String> cache;
     @Autowired
     private TokenUtil tokenUtil;
     @Override
@@ -44,16 +47,24 @@ public class ManagerTokenGenerate extends AbstractTokenGenerate {
      */
     @Override
     public Token createToken(Object adminUser, Boolean longTerm) {
-        // 对象强制转换
-        AdminUser admin = (AdminUser) adminUser;
-        AuthUser user = new AuthUser(admin.getUsername(), admin.getId(), UserEnums.MANAGER, admin.getNickName(), admin.getIsSuper());
-        // 根据角色集合获取获取拥有菜单的具体权限
-        List<UserMenuVo> userMenuVoList = roleMenuService.findAllMenu(user.getId());
-        //log.debug("管理员获取角色权限");
-        // redis缓存权限列表
-        cache.put(CachePrefix.PERMISSION_LIST.getPrefix(UserEnums.MANAGER) + user.getId(),
-                permissionList(userMenuVoList),
-                30L, TimeUnit.MINUTES);
+        AuthUser user = null;
+        if (adminUser instanceof AdminUser) {
+            // 对象强制转换
+            AdminUser admin = (AdminUser) adminUser;
+            user = new AuthUser(admin.getUsername(), admin.getId(), UserEnums.MANAGER, admin.getNickName(), admin.getIsSuper());
+            // 根据角色集合获取获取拥有菜单的具体权限
+            List<UserMenuVo> userMenuVoList = roleMenuService.findAllMenu(user.getId());
+            //log.debug("管理员获取角色权限");
+            // redis缓存权限列表
+            Gson gson = new Gson();
+            cache.put(CachePrefix.PERMISSION_LIST.getPrefix(UserEnums.MANAGER) + user.getId(),
+                    gson.toJson(permissionList(userMenuVoList)),
+                    60L, TimeUnit.MINUTES);
+        } else if (adminUser instanceof AuthUser) {
+            user = (AuthUser) adminUser;
+        } else {
+            throw new ServiceException(ResultCode.USER_TOKEN_ERROR);
+        }
         //return tokenUtil.createToken(admin.getUsername(), UserEnums.MANAGER);
         return tokenUtil.createToken(user);
     }

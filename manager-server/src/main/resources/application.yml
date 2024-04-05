@@ -50,5 +50,5 @@ logging:
 # 忽略鉴权url
 ignored:
   urls:
-    - /user/login
+    - /**/login
     - /user/refresh/**

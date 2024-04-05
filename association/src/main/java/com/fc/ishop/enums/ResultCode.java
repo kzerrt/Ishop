@@ -95,6 +95,7 @@ public enum ResultCode {
     USER_EDIT_ERROR(20015, "用户修改失败"),
     USER_OLD_PASSWORD_ERROR(20016, "旧密码不正确"),
     USER_SIMILAR_PASSWORD(20016, "新密码与旧密码相同"),
+    USER_TOKEN_ERROR(20017, "用户信息token转换错误"),
 
     /**
      * 权限

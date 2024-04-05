@@ -31,7 +31,7 @@ public class GoodsStatisticsDataServiceImpl
         queryWrapper.groupBy("goods_id");
         queryWrapper.groupBy("goods_name");
 
-        queryWrapper.eq(!StringUtils.isEmpty(goodsStatisticsQueryParam.getStoreId()), "store_id", goodsStatisticsQueryParam.getStoreId());
+        //queryWrapper.eq(!StringUtils.isEmpty(goodsStatisticsQueryParam.getStoreId()), "store_id", goodsStatisticsQueryParam.getStoreId());
         //查询前一百条记录
         Page page = new Page<GoodsStatisticsDataVo>(1, num);
         return baseMapper.getGoodsStatisticsData(page, queryWrapper);
