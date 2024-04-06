@@ -4,7 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fc.ishop.base.BaseEntity;
-import com.fc.ishop.dos.goods.GoodsSku;
+import com.fc.ishop.dos.goods.Goods;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -83,12 +83,13 @@ public class PromotionGoods extends BaseEntity {
     //@ApiModelProperty(value = "分类path")
     private String categoryPath;
 
-    public PromotionGoods(GoodsSku sku) {
-        if (sku != null) {
-            String oldId = this.getId();
-            BeanUtil.copyProperties(sku, this);
-            this.setSkuId(sku.getId());
-            this.setId(oldId);
+    public PromotionGoods(Goods goods) {
+        if (goods != null) {
+            skuId = goods.getId();
+            goodsName = goods.getGoodsName();
+            thumbnail = goods.getThumbnail();
+            quantity = goods.getQuantity();
+            limitNum = 10;
         }
     }
 

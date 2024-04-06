@@ -6,6 +6,8 @@ import com.fc.ishop.constant.SendParam;
 import com.fc.ishop.dos.trade.SecKill;
 import com.fc.ishop.dos.trade.SecKillApply;
 import com.fc.ishop.dto.SecKillSearchParams;
+import com.fc.ishop.enums.ResultCode;
+import com.fc.ishop.enums.ResultUtil;
 import com.fc.ishop.vo.PageVo;
 import com.fc.ishop.vo.ResultMessage;
 import com.fc.ishop.vo.SecKillVo;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -39,7 +42,6 @@ public class SecKillManagerController {
     }
 
     @GetMapping(value = "/{id}")
-    //(value = "通过id获取")
     public ResultMessage<SecKill> get(@PathVariable String id) {
         return secKillManagerClient.get(id);
     }
@@ -81,6 +83,14 @@ public class SecKillManagerController {
         send.put(SendParam.secKillSearchParams, gson.toJson(param));
         send.put(SendParam.pageVo, gson.toJson(pageVo));
         return secKillManagerClient.getSecKillApply(send);
+    }
+    @PostMapping("/apply/{seckillId}")
+    public ResultMessage<String> addSecKillApply(@PathVariable String seckillId,@RequestBody List<SecKillApply> secKillApplyList) {
+        if (seckillId == null || secKillApplyList == null || secKillApplyList.isEmpty()) {
+            return ResultUtil.error(ResultCode.POINT_GOODS_ERROR);
+        }
+        secKillManagerClient.addSeckillApply(seckillId, secKillApplyList);
+        return ResultUtil.success();
     }
 
     @PutMapping("/apply/audit/{ids}")

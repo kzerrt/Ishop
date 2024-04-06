@@ -5,23 +5,25 @@ import cn.hutool.core.text.CharSequenceUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.fc.ishop.dos.goods.Goods;
 import com.fc.ishop.dos.goods.GoodsSku;
 import com.fc.ishop.dos.trade.PromotionGoods;
+import com.fc.ishop.dos.trade.SecKill;
 import com.fc.ishop.dos.trade.SecKillApply;
 import com.fc.ishop.dto.SecKillSearchParams;
 import com.fc.ishop.enums.PromotionApplyStatusEnum;
+import com.fc.ishop.enums.PromotionStatusEnum;
 import com.fc.ishop.enums.PromotionTypeEnum;
 import com.fc.ishop.exception.ServiceException;
 import com.fc.ishop.mapper.SecKillApplyMapper;
-import com.fc.ishop.service.GoodsSkuService;
-import com.fc.ishop.service.PromotionGoodsService;
-import com.fc.ishop.service.SecKillApplyService;
-import com.fc.ishop.service.SecKillService;
+import com.fc.ishop.service.*;
 import com.fc.ishop.util.MongoUtil;
 import com.fc.ishop.util.PromotionTools;
+import com.fc.ishop.utils.DateUtil;
 import com.fc.ishop.utils.StringUtils;
 import com.fc.ishop.vo.PageVo;
 import com.fc.ishop.vo.SecKillVo;
+import com.fc.ishop.vo.SeckillGoodsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
@@ -46,6 +48,8 @@ public class SecKillApplyServiceImpl
     private PromotionGoodsService promotionGoodsService;
     @Autowired
     private GoodsSkuService goodsSkuService;
+    @Autowired
+    private GoodsService goodsService;
     @Autowired
     private SecKillService secKillService;
     @Override
@@ -127,24 +131,6 @@ public class SecKillApplyServiceImpl
             throw new ServiceException("当前参与的限时抢购不存在！");
         }
         seckill.checkTime();
-        // 检查限时抢购申请是否合法
-        checkSeckillApplyList(seckill.getApplyEndTime().getTime(), seckill.getHours(), applyVos, storeId);
-        String storeIds = seckill.getStoreIds() != null ? seckill.getStoreIds() : "";
-        boolean containsStore = false;// 该店铺是否重复申请活动
-        List<String> storeIdList = Arrays.asList(storeIds.split(","));
-        // 检查是否为已参加店铺
-        if (!StringUtils.isEmpty(seckillId)) {
-            if (StringUtils.isEmpty(storeIds)) {
-                storeIds = storeId + ",";
-            } else {
-                if (storeIdList.contains(storeId)) {
-                    containsStore = true;
-                } else {
-                    storeIds = seckill.getStoreIds() + storeId + ",";
-                }
-            }
-            seckill.setStoreIds(storeIds);
-        }
 
         List<SecKillApply> originList = seckill.getSeckillApplyList();
         List<PromotionGoods> promotionGoodsList = new ArrayList<>();
@@ -152,11 +138,8 @@ public class SecKillApplyServiceImpl
             originList = new ArrayList<>();
         }
         for (SecKillApply seckillApply : applyVos) {
-            GoodsSku goodsSku = goodsSkuService.getGoodsSkuByIdFromCache(seckillApply.getSkuId());
-            if (goodsSku.getQuantity() < seckillApply.getQuantity()) {
-                throw new ServiceException(seckillApply.getGoodsName() + ",此商品库存不足");
-            }
-            seckillApply.setOriginalPrice(goodsSku.getPrice());
+            Goods goods = goodsService.getById(seckillApply.getSkuId());
+            seckillApply.setOriginalPrice(goods.getPrice());
             seckillApply.setPromotionApplyStatus(PromotionApplyStatusEnum.APPLY.name());
             seckillApply.setSalesNum(0);
 
@@ -168,9 +151,13 @@ public class SecKillApplyServiceImpl
             }
 
             originList.add(seckillApply);
-            PromotionGoods promotionGoods = new PromotionGoods(goodsSku);
+            PromotionGoods promotionGoods = new PromotionGoods(goods);
             promotionGoods.setPrice(seckillApply.getPrice());
             promotionGoods.setQuantity(seckillApply.getQuantity());
+            promotionGoods.setStartTime(seckill.getStartTime());
+            promotionGoods.setEndTime(seckill.getEndTime());
+            promotionGoods.setPromotionId(seckillId);
+            promotionGoods.setPromotionType(PromotionTypeEnum.SECKILL.name());
 
             promotionGoodsList.add(promotionGoods);
         }
@@ -185,9 +172,38 @@ public class SecKillApplyServiceImpl
             PromotionTools.promotionGoodsInit(promotionGoodsList, seckill, PromotionTypeEnum.SECKILL);
             promotionGoodsService.saveBatch(promotionGoodsList);
         }
-        if (Boolean.FALSE.equals(containsStore)) {
-            secKillService.storeApply(storeId, seckill.getId());
+    }
+
+    @Override
+    public List<SeckillGoodsVo> getSeckillGoods(Integer timeline) {
+        if (timeline == null) {
+            return null;
         }
+        List<SeckillGoodsVo> list = new ArrayList<>();
+        LambdaQueryWrapper<SecKill> secKillWrapper = new LambdaQueryWrapper<>();
+        secKillWrapper.gt(SecKill::getStartTime, DateUtil.startOfTodDay() * 1000)
+                .lt(SecKill::getEndTime, DateUtil.endOfDate())
+                .and(i -> i.eq(SecKill::getPromotionStatus, PromotionStatusEnum.NEW.name())
+                        .or(j -> j.eq(SecKill::getPromotionStatus, PromotionStatusEnum.START.name())));
+        List<SecKill> secKills = secKillService.list(secKillWrapper);
+        if (secKills.isEmpty()) {
+            return list;
+        }
+        for (SecKill secKill : secKills) {
+            LambdaQueryWrapper<SecKillApply> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(SecKillApply::getTimeLine, timeline).eq(SecKillApply::getSeckillId, secKill.getId())
+                    .eq(SecKillApply::getPromotionApplyStatus, PromotionApplyStatusEnum.PASS.name());
+            List<SecKillApply> killApplies = this.list(queryWrapper);
+            for (SecKillApply killApply : killApplies) {
+                Goods goods = goodsService.getById(killApply.getSkuId());
+                if (goods != null) {
+                    SeckillGoodsVo seckillGoodsVo = new SeckillGoodsVo(goods);
+                    seckillGoodsVo.setSeckillId(secKill.getId());
+                    list.add(seckillGoodsVo);
+                }
+            }
+        }
+        return list;
     }
 
     /**

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.fc.ishop.dos.trade.SecKillApply;
 import com.fc.ishop.dto.SecKillSearchParams;
 import com.fc.ishop.vo.PageVo;
+import com.fc.ishop.vo.SeckillGoodsVo;
 
 import java.util.List;
 
@@ -38,4 +39,11 @@ public interface SecKillApplyService extends IService<SecKillApply> {
      * @param applyVos 请求类
      */
     void addSeckillApply(String seckillId, String storeId, List<SecKillApply> applyVos);
+
+    /**
+     * 获取谋一时间段内的商品信息
+     * @param timeline
+     * @return
+     */
+    List<SeckillGoodsVo> getSeckillGoods(Integer timeline);
 }

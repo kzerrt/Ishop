@@ -5,9 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fc.ishop.dos.trade.SecKill;
 import com.fc.ishop.dos.trade.SecKillApply;
 import com.fc.ishop.dto.SecKillSearchParams;
-import com.fc.ishop.vo.PageVo;
-import com.fc.ishop.vo.ResultMessage;
-import com.fc.ishop.vo.SecKillVo;
+import com.fc.ishop.vo.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -76,4 +74,20 @@ public interface SecKillManagerClient {
      */
     @PostMapping("/store-sa/seckillApply/add/{seckillId}")
     ResultMessage<Object> addSeckillApply(@PathVariable String seckillId, @RequestBody List<SecKillApply> applyVos);
+
+    /**
+     * *************************************      买家端          *********************************************
+     */
+    /**
+     * 获取某一时刻的商品信息
+     */
+    @GetMapping("/buyer/seckillApply/getSeckillGoods/{timeline}")
+    List<SeckillGoodsVo> getSeckillGoods(@PathVariable Integer timeline);
+
+    /**
+     * 获取当天信息
+     * @return
+     */
+    @GetMapping("/buyer/seckillApply/getSeckillGoods")
+    List<SeckillTimelineVo> getSeckillTimeline();
 }

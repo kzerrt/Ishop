@@ -114,6 +114,19 @@ public class DateUtil {
         }
         return "";
     }
+    /**
+     * 当天的结束时间
+     *
+     * @return
+     */
+    public static Date endOfDate() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
+        calendar.set(Calendar.MILLISECOND, 999);
+        return calendar.getTime();
+    }
 
     public static Date endOfDate(Date date) {
         Calendar calendar = Calendar.getInstance();
@@ -133,5 +146,9 @@ public class DateUtil {
         calendar.set(Calendar.MILLISECOND, 0);
         Date date = calendar.getTime();
         return date.getTime() / 1000;
+    }
+
+    public static long getDateline(String date, String pattern) {
+        return toDate(date, pattern).getTime() / 1000;
     }
 }

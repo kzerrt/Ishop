@@ -39,4 +39,16 @@ public class IFile extends BaseEntity {
 
     //@ApiModelProperty(value = "用户类型")
     private String userEnums;
+
+    @Override
+    public String toString() {
+        return "IFile{" +
+                "name='" + name + '\'' +
+                ", fileSize=" + fileSize +
+                ", fileType='" + fileType + '\'' +
+                ", url='" + url + '\'' +
+                ", ownerId='" + ownerId + '\'' +
+                ", userEnums='" + userEnums + '\'' +
+                '}';
+    }
 }

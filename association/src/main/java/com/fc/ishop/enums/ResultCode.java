@@ -55,7 +55,7 @@ public enum ResultCode {
     GOODS_UNDER_ERROR(11003, "商品下架失败"),
     GOODS_UPPER_ERROR(11004, "商品上架失败"),
     GOODS_AUTH_ERROR(11005, "商品审核失败"),
-    POINT_GOODS_ERROR(11006, "积分商品业务异常，请稍后重试"),
+    POINT_GOODS_ERROR(11006, "活动商品申请失败"),
 
     /**
      * 参数

@@ -70,8 +70,8 @@ public class UploadController {
             newFile.setUrl(FileUtil.uploadFile(file, rename,
                     newFile.getUserEnums(), newFile.getOwnerId()/* 文件存放位置路径*/));
             fileService.save(newFile);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            log.error("文件添加失败 将要添加的文件信息 {}", newFile, e);
             try { // 文件删除
                 FileUtil.deleteFile(newFile.getUrl());
             } catch (IOException ex) {

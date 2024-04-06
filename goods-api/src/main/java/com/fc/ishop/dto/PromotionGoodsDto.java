@@ -29,7 +29,5 @@ public class PromotionGoodsDto extends PromotionGoods {
     //(value = "商品图片")
     private String goodsImage;
 
-    public PromotionGoodsDto(GoodsSku sku) {
-        super(sku);
-    }
+
 }
