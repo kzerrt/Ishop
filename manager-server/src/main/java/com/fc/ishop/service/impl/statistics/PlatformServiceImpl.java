@@ -31,7 +31,14 @@ public class PlatformServiceImpl implements PlatformService {
             }
         }
         // 每隔10分钟统计有效token
-        int size = cache.keys(CachePrefix.ACCESS_TOKEN.getPrefix() + "*").size() + 1;
+        List keys = cache.keys(CachePrefix.ACCESS_TOKEN.getPrefix() + "*");
+        int size;
+        if (keys == null) {
+            size = 1;
+        } else {
+            size = keys.size() + 1;
+        }
+
         cache.put(CachePrefix.ONLINE_NUM.getPrefix(), size, 600L);
         return (long) size;
     }

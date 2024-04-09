@@ -3,7 +3,9 @@ package com.fc.ishop.utils;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -15,7 +17,17 @@ import java.util.Set;
 public class IPUtil {
     private static final String UNKNOWN = "unknown";
     private static final Set<String> limitedIps = new HashSet<>();
-
+    // 非法请求地址
+    private static final String[] illegalUri =
+            {"/**/article-category/**", "/**/article/**", "/**/promotion/current"};
+    public static boolean checkUrl(String uri) {
+        for (String s : illegalUri) {
+            if (StringUtils.matchUri(uri, s)) {
+                return true;
+            }
+        }
+        return false;
+    }
     public static boolean hasLimitedIp(String ipAddress) {
         // 检查ip地址
         checkIp(ipAddress);

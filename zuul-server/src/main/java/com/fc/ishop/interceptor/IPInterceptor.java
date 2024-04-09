@@ -40,6 +40,9 @@ public class IPInterceptor extends ZuulFilter{
         HttpServletRequest request = context.getRequest();
         String host = IPUtil.getIpAddress(request);
         //log.debug("请求进入到ip拦截器 {} request method: {} request uri: {}", host,request.getMethod(), request.getRequestURI());
+        if (IPUtil.checkUrl(request.getRequestURI())) {
+            context.setSendZuulResponse(false);
+        }
         if (IPUtil.hasLimitedIp(host)) {
             log.warn("主机：{} 被限制登录", host);
             throw new IPException("请求被拒绝，请稍后重试");

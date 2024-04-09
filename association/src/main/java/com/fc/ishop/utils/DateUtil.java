@@ -147,6 +147,15 @@ public class DateUtil {
         Date date = calendar.getTime();
         return date.getTime() / 1000;
     }
+    public static Date startOfTodDay(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTime();
+    }
 
     public static long getDateline(String date, String pattern) {
         return toDate(date, pattern).getTime() / 1000;

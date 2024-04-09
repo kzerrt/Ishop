@@ -48,6 +48,7 @@ public class ExceptionHandlerInterceptor extends ZuulFilter {
         //throwable.printStackTrace();
         // 可选：设置响应内容为一条错误消息
         currentContext.setResponseBody(throwable.getMessage());
+        currentContext.getResponse().setContentType("application/json; charset=utf-8");
         // 停止路由，不再将请求转发到后端服务
         currentContext.setSendZuulResponse(false);
         return null;

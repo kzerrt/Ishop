@@ -15,4 +15,8 @@ public interface MemberStatisticsDataMapper extends BaseMapper<MemberStatisticsD
 
     @Select("SELECT  COUNT(id)  FROM i_member  ${ew.customSqlSegment}")
     Integer customSqlQuery(@Param(Constants.WRAPPER) QueryWrapper queryWrapper);
+    @Select("SELECT id, active_quantity AS activeQuantity, create_date AS createDate,member_count AS memberCount,newly_added AS newlyAdded\n" +
+            "FROM `i_member_statistics_data` a, \n" +
+            "(SELECT MAX(create_date) date FROM `i_member_statistics_data`) b WHERE b.date = a.create_date;")
+    MemberStatisticsData getRecentlyOne();
 }
